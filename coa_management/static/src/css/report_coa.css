@@ -1,0 +1,81 @@
+.no-break-inside {
+    page-break-inside: avoid;
+}
+.underline {
+    text-decoration: underline;
+}
+}.mt-8 {
+    margin-top: 3rem !important;
+}
+}.mb-8 {
+    margin-bottom: 3rem !important;
+}
+.ml-8 {
+    margin-left: 3rem !important;
+}
+.mb-16 {
+    margin-bottom: 6rem !important;
+}
+.br-gray {
+    border-right: 1px solid Gray;
+}
+.bb-gray {
+    border-bottom: 1px solid Gray;
+}
+.bl-seagreen {
+    border-left: 1px solid SeaGreen;
+}
+.bt-seagreen {
+    border-top: 1px solid SeaGreen;
+}
+.v-align-middle {
+    vertical-align: middle;
+}
+.pl-05 {
+    padding-left: 0.5rem;
+}
+.p-0 {
+    padding: 0;
+}
+.prl-1 {
+    padding: 0 1rem 0 1rem;
+}
+.fs-13-rem {
+    font-size: 1.3rem;
+}
+.fs-15-rem {
+    font-size: 1.5rem;
+}
+.bc-darkgray {
+    background-color: DarkGray;
+}
+
+ul.no-marker-style {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+ul.inline-style li {
+  display: inline;
+}
+.coa-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid Gray;
+}
+table.th-gray th {
+    background-color: LightGray;
+}
+table.th-whitesmoke th {
+    background-color: WhiteSmoke;
+}
+table.pl-05 th, table.pl-05 td {
+    padding-left: 0.5rem;
+}
+table.p-1-05 th, table.p-1-05 td {
+    padding: 0 0 1rem 0.5rem;
+}
+table.bbr-gray th, table.bbr-gray td {
+    border-right: 1px solid Gray;
+    border-bottom: 1px solid Gray;
+}

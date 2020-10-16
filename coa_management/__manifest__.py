@@ -2,18 +2,20 @@
 # Part of Idealis Consulting. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Automatic Reference for Product Templates',
+    'name': 'CoA Management',
     'version': '14.0.0.1',
-    'category': 'Sales',
+    'category': 'Manufacturing/Quality',
     'description': """ 
-    This module allows to automatically fill the internal reference of a Product with a sequence
+    This module allows users to create the product CoA with prefilled values
     """,
     'author': 'Idealis Consulting',
     'website': 'http://www.idealisconsulting.com',
-    'depends': ['product'],
+    'depends': ['stock', 'web', 'purchase_stock'],
     'data': [
-        'data/product_data.xml',
-        'views/product_views.xml',
+        'views/stock_production_lot_views.xml',
+        'views/coa_templates.xml',
+        'report/coa_templates.xml',
+        'report/coa_report.xml'
     ],
     'auto_install': False,
     'installable': True,
