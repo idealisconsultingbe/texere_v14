@@ -73,7 +73,7 @@ table.pl-05 th, table.pl-05 td {
     padding-left: 0.5rem;
 }
 table.p-1-05 th, table.p-1-05 td {
-    padding: 0 0 1rem 0.5rem;
+    padding: 0 0.5rem 1rem 0.5rem;
 }
 table.bbr-gray th, table.bbr-gray td {
     border-right: 1px solid Gray;

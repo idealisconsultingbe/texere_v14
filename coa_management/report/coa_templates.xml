@@ -46,13 +46,13 @@
                                 <th width="25%">Arrival on</th>
                                 <td width="25%"><span t-field="doc.arrival_date"/></td>
                                 <th width="25%">Expiry date</th>
-                                <td width="25%"><!--<span t-field="doc.expiration_date"/>--></td>
+                                <td width="25%"><span t-field="doc.expiration_date"/></td>
                             </tr>
                             <tr>
                                 <th>Quantity (precise units)</th>
                                 <td>
                                     <t t-if="doc.product_qty &gt; 0">
-                                        <span t-field="doc.product_qty"/><span t-field="doc.product_uom_id.name"/>
+                                        <span t-field="doc.product_qty"/> <span t-field="doc.product_uom_id.name"/>
                                     </t>
                                     <t t-else="">&amp;nbsp;</t>
                                 </td>
@@ -157,7 +157,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Received materials conform to the specification criteria ?</th>
+                                <th style="font-size: 0.9rem;">Received materials conform to the specification criteria ?</th>
                                 <td colspan="3">
                                     <t t-if="doc.materials_conformity">
                                         <span t-field="doc.materials_conformity"/>
@@ -175,7 +175,7 @@
                             </tr>
                             <tr>
                                 <th>* Explanations</th>
-                                <td colspan="3" style="height: 7rem;">
+                                <td colspan="3" style="height: 5rem;">
                                     <span t-field="doc.reception_comment"/>
                                 </td>
                             </tr>
@@ -192,6 +192,8 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <p style="page-break-after:always;"/>
 
                     <table class="coa-table p-1-05 bbr-gray th-whitesmoke">
                         <tbody>
