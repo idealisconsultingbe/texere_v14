@@ -100,7 +100,7 @@ class LotReceptionForm(models.Model):
             'signature': self.env.user.sign_signature,
             'state': 'validated',
         })
-        pdf = self.env.ref('reception_and_release_management.action_report_reception_and_release_form').render_qweb_pdf(self.id)
+        pdf = self.env.ref('reception_and_release_management.action_report_reception_and_release_form')._render(self.id)
         b64_pdf = base64.b64encode(pdf[0])
         attachment = self.env['ir.attachment'].create({
             'name': '[{}]Reception_and_release_form-lot{}.pdf'.format(self.state.upper(), (self.lot_id.name).replace('/', '')),
@@ -126,7 +126,9 @@ class LotReceptionForm(models.Model):
         if self.env.context.get('send_form'):
             # attach pdf to current record
             # When rendering qweb, record attachment is automatically done if attachment is set on report action
-            pdf = self.env.ref('reception_and_release_management.action_report_reception_and_release_form').render_qweb_pdf(self.id)
+
+            # pdf = self.env.ref('reception_and_release_management.action_report_reception_and_release_form').render_qweb_pdf(self.id)
+            pdf = self.env.ref('reception_and_release_management.action_report_reception_and_release_form')._render(self.id)
             b64_pdf = base64.b64encode(pdf[0])
             attachment = self.env['ir.attachment'].create({
                 'name': '[{}]Reception_and_release_form-lot{}.pdf'.format(self.state.upper(), (self.lot_id.name).replace('/', '')),
@@ -149,7 +151,7 @@ class LotReceptionForm(models.Model):
                 'view_type': 'form'
             }))
             body = _('Reception and release form of lot <a href="{}">{}</a> is waiting for a validation').format(url, self.lot_id.name)
-
+            # TODO= FIX THIS ! control point not reachable due to routes
             control_points = self.picking_id.mapped('check_ids.point_id')
             for point in control_points:
                 point.message_post(

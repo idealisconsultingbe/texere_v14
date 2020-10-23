@@ -4,15 +4,17 @@
 
 <!--        When rendering qweb, record attachment is automatically done if attachment is set on report action-->
 <!--            attachment="'[{}]Reception_and_release_form-lot{}.pdf'.format(object.state.upper(), (object.lot_id.name).replace('/', ''))"-->
-        <report
-            id="action_report_reception_and_release_form"
-            string="Reception &amp; Release Form"
-            model="stock.production.lot.reception.form"
-            report_type="qweb-pdf"
-            file="reception_and_release_management.report_lot_reception_and_release"
-            name="reception_and_release_management.report_lot_reception_and_release"
-            print_report_name="'Reception and Release form - Lot %s' % (object.lot_id.name)"
-        />
+        <!-- report is now replaced by record in V14 -->
+        <record id="action_report_reception_and_release_form" model="ir.actions.report">
+            <field name="name">Reception and Release Form</field>
+            <field name="model">stock.production.lot.reception.form</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_file">reception_and_release_management.report_lot_reception_and_release</field>
+            <field name="report_name">reception_and_release_management.report_lot_reception_and_release</field>
+            <field name="print_report_name">'Reception and Release form - Lot %s' % (object.lot_id.name)</field>
+            <field name="binding_model_id" ref="model_stock_production_lot_reception_form"/>
+            <field name="binding_type">report</field>
+        </record>
 
     </data>
 </odoo>
