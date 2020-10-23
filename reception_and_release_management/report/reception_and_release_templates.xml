@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="coa_assets" inherit_id="web.report_assets_common">
+    <template id="reception_and_release_assets" inherit_id="web.report_assets_common">
         <xpath expr="." position="inside">
-            <link rel="stylesheet" type="text/css" href="/coa_management/static/src/css/report_coa.css"/>
+            <link rel="stylesheet" type="text/css" href="/reception_and_release_management/static/src/css/report_reception_and_release.css"/>
         </xpath>
     </template>
 
-    <template id="report_lot_coa">
+    <template id="report_lot_reception_and_release">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
                 <t t-set="lang" t-value="doc.company_id.partner_id.lang"/>
-                <t t-call="coa_management.report_lot_coa_document" t-lang="lang"/>
+                <t t-call="reception_and_release_management.report_lot_reception_and_release_document" t-lang="lang"/>
             </t>
         </t>
     </template>
 
-    <template id="report_lot_coa_document">
-        <t t-call="coa_management.coa_company_external_layout">
+    <template id="report_lot_reception_and_release_document">
+        <t t-call="reception_and_release_management.reception_and_release_company_external_layout">
             <div class="page">
 
                 <div class="col-12">
@@ -28,11 +28,11 @@
                                 <th width="25%">Product name</th>
                                 <td width="25%"><span t-field="doc.product_id.name"/></td>
                                 <th width="25%">Order form#</th>
-                                <td width="25%">missing</td>
+                                <td width="25%"><span t-field="doc.purchase_id.name"/></td>
                             </tr>
                             <tr>
                                 <th colspan="2">Product type</th>
-                                <td colspan="2"><span t-field="doc.product_id.type"/></td>
+                                <td colspan="2"><span t-field="doc.product_id.categ_id.name"/></td>
                             </tr>
                         </tbody>
                     </table>
@@ -47,6 +47,7 @@
                                 <td width="25%"><span t-field="doc.arrival_date"/></td>
                                 <th width="25%">Expiry date</th>
                                 <td width="25%"><span t-field="doc.expiration_date"/></td>
+
                             </tr>
                             <tr>
                                 <th>Quantity (precise units)</th>
@@ -77,17 +78,24 @@
                             </tr>
                             <tr>
                                 <th>Supplier ID#</th>
-                                <td>missing</td>
+                                <td><span t-field="doc.seller_product_code"/></td>
                                 <th>Supplier batch#</th>
                                 <td>missing</td>
                             </tr>
                             <tr>
                                 <th colspan="2">Texere Biotech ID#</th>
-                                <td colspan="2">missing</td>
+                                <td colspan="2"><span t-field="doc.product_id.default_code"/></td>
                             </tr>
                             <tr>
                                 <th colspan="2">Specifications reference (cfr section "OP.1.1 Specifications" of the QMS)</th>
-                                <td colspan="2">OP.1.1_SPE_ ..... / .....</td>
+                                <td colspan="2">OP.1.1_SPE_
+                                    <t t-if="doc.specification_reference">
+                                        <span t-field="doc.specification_reference"/>
+                                    </t>
+                                    <t t-else="">
+                                        ..... / .....
+                                    </t>
+                                </td>
                             </tr>
                             <tr>
                                 <th rowspan="2">Reconciliation</th>
@@ -124,8 +132,8 @@
                                 <th>Certificate of Analysis</th>
                                 <td colspan="3">
                                     <p class="m-0">To attach CoA as Appendix 1</p>
-                                    <t t-if="doc.coa_appendix">
-                                        <input type="checkbox" checked="checked"/>&amp;nbsp;<span t-field="doc.coa_appendix"/>
+                                    <t t-if="doc.form_appendix">
+                                        <input type="checkbox" checked="checked"/>&amp;nbsp;<span t-field="doc.form_appendix"/>
                                     </t>
                                     <t t-else="">
                                         <ul class="no-marker-style inline-style">
@@ -186,9 +194,9 @@
                                 <th class="text-center p-0">Signature</th>
                             </tr>
                             <tr>
-                                <td>&amp;nbsp;<!--<span t-field="doc.env.user.name"/>--></td>
-                                <td>&amp;nbsp;<!--<span t-esc="datetime.datetime.now().date()"/>--></td>
-                                <td>&amp;nbsp;</td>
+                                <td class="h-35 text-center p-0"><span t-if="doc.receipt_signed_by" t-field="doc.receipt_signed_by.name"/></td>
+                                <td class="h-35 text-center p-0"><span t-if="doc.receipt_signed_on" t-field="doc.receipt_signed_on"/></td>
+                                <td class="h-35 text-center p-0"><img t-if="doc.receipt_signature" style="max-height: 3.5rem;" t-attf-src="data:image/png;base64,#{doc.receipt_signature}" alt="Signature"/></td>
                             </tr>
                         </tbody>
                     </table>
@@ -201,21 +209,38 @@
                                 <th style="padding: 0.2rem 0 0 0.5rem; background-color: DarkGray" colspan="4"><h2 class="fs-13-rem">Label preparation</h2></th>
                             </tr>
                             <tr>
+<!--                                    <td colspan="4" style="border-bottom: none;">-->
+<!--                                        <ul class="no-marker-style">-->
+<!--                                            <li>-->
+<!--                                                <input type="checkbox" checked="checked" t-if="doc.following_template"/>-->
+<!--                                                <input type="checkbox" t-if="not doc.following_template"/>-->
+<!--                                                &amp;nbsp;-->
+<!--                                                To prepare n+1 labels following the template here below-->
+<!--                                            </li>-->
+<!--                                            <li>-->
+<!--                                                Total: n+1 = <span t-if="doc.total_labels" t-field="doc.total_labels"/>-->
+<!--                                                <span t-if="not doc.total_labels"> ...... </span> labels-->
+<!--                                            </li>-->
+<!--                                            <li class="mt-4">-->
+<!--                                                <input type="checkbox" checked="checked" t-if="doc.specimen_sticked"/>-->
+<!--                                                <input type="checkbox" t-if="not doc.specimen_sticked"/>-->
+<!--                                                &amp;nbsp;-->
+<!--                                                Stick one specimen here below-->
+<!--                                            </li>-->
+<!--                                        </ul>-->
+<!--                                    </td>-->
                                 <td colspan="4" style="border-bottom: none;">
                                     <ul class="no-marker-style">
                                         <li>
-                                            <input type="checkbox" checked="checked" t-if="doc.following_template"/>
-                                            <input type="checkbox" t-if="not doc.following_template"/>
+                                            <input type="checkbox"/>
                                             &amp;nbsp;
                                             To prepare n+1 labels following the template here below
                                         </li>
                                         <li>
-                                            Total: n+1 = <span t-if="doc.total_labels" t-field="doc.total_labels"/>
-                                            <span t-if="not doc.total_labels"> ...... </span> labels
+                                            Total: n+1 = ...... labels
                                         </li>
                                         <li class="mt-4">
-                                            <input type="checkbox" checked="checked" t-if="doc.specimen_sticked"/>
-                                            <input type="checkbox" t-if="not doc.specimen_sticked"/>
+                                            <input type="checkbox"/>
                                             &amp;nbsp;
                                             Stick one specimen here below
                                         </li>
@@ -225,9 +250,9 @@
                             <tr>
                                 <td colspan="4" style="border-top: none;">
                                     <ul class="no-marker-style mt-8 ml-4 mb-8">
-                                        <li class="mb-2">Texere ID</li>
+                                        <li class="mb-2">Texere ID:</li>
                                         <li class="mb-2">Expiry date:</li>
-                                        <li>Storage temperature</li>
+                                        <li>Storage temperature:</li>
                                     </ul>
                                 </td>
                             </tr>
@@ -238,16 +263,16 @@
                                 <th width="25%" class="text-center p-0">Signature</th>
                             </tr>
                             <tr>
-                                <th>Label preparation</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <th class="h-35">Label preparation</th>
+                                <td class="h-35"></td>
+                                <td class="h-35"></td>
+                                <td class="h-35"></td>
                             </tr>
                             <tr>
-                                <th>Double-check <small>(not required for not critical RCs)</small></th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <th class="h-35">Double-check <small>(not required for not critical RCs)</small></th>
+                                <td class="h-35"></td>
+                                <td class="h-35"></td>
+                                <td class="h-35"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -278,31 +303,45 @@
                                 <th width="25%" class="text-center p-0">Signature</th>
                             </tr>
                             <tr>
-                                <td>&amp;nbsp;</td>
-                                <td>&amp;nbsp;</td>
-                                <td>&amp;nbsp;</td>
-                                <td>&amp;nbsp;</td>
+                                <td class="h-35 text-center p-0"><span t-if="doc.job_title" t-field="doc.job_title"/></td>
+                                <td class="h-35 text-center p-0"><span t-if="doc.signed_by" t-field="doc.signed_by.name"/></td>
+                                <td class="h-35 text-center p-0"><span t-if="doc.signed_on" t-field="doc.signed_on"/></td>
+                                <td class="h-35 text-center p-0"><img t-if="doc.signature" style="max-height: 3.5rem;" t-attf-src="data:image/png;base64,#{doc.signature}" alt="Signature"/></td>
                             </tr>
                             <tr>
                                 <th rowspan="5">Identification &amp; storage</th>
+<!--                                <td colspan="3" style="border-bottom: none;">-->
+<!--                                    <p class="m-0">-->
+<!--                                        <t t-if="doc.products_sticked"><input type="checkbox" checked="checked"/></t>-->
+<!--                                        <t t-else=""><input type="checkbox"/></t>-->
+<!--                                        To stick labels on the reagents/consumables-->
+<!--                                    </p>-->
+<!--                                    <div class="ml-8">-->
+<!--                                        <t t-if="doc.label_reconciliation">-->
+<!--                                            Label reconciliation : exact number ? <span t-field="doc.label_reconciliation"/>-->
+<!--                                        </t>-->
+<!--                                        <t t-else="">-->
+<!--                                            <ul class="no-marker-style inline-style">-->
+<!--                                                <li>Label reconciliation : exact number ? </li>-->
+<!--                                                <li><input type="checkbox"/> Yes</li>-->
+<!--                                                <li> / </li>-->
+<!--                                                <li><input type="checkbox"/> No**</li>-->
+<!--                                            </ul>-->
+<!--                                        </t>-->
+<!--                                    </div>-->
+<!--                                </td>-->
                                 <td colspan="3" style="border-bottom: none;">
                                     <p class="m-0">
-                                        <t t-if="doc.products_sticked"><input type="checkbox" checked="checked"/></t>
-                                        <t t-else=""><input type="checkbox"/></t>
+                                        <input type="checkbox"/>
                                         To stick labels on the reagents/consumables
                                     </p>
                                     <div class="ml-8">
-                                        <t t-if="doc.label_reconciliation">
-                                            Label reconciliation : exact number ? <span t-field="doc.label_reconciliation"/>
-                                        </t>
-                                        <t t-else="">
-                                            <ul class="no-marker-style inline-style">
-                                                <li>Label reconciliation : exact number ? </li>
-                                                <li><input type="checkbox"/> Yes</li>
-                                                <li> / </li>
-                                                <li><input type="checkbox"/> No**</li>
-                                            </ul>
-                                        </t>
+                                        <ul class="no-marker-style inline-style">
+                                            <li>Label reconciliation : exact number ? </li>
+                                            <li><input type="checkbox"/> Yes</li>
+                                            <li> / </li>
+                                            <li><input type="checkbox"/> No**</li>
+                                        </ul>
                                     </div>
                                 </td>
                             </tr>
@@ -311,7 +350,7 @@
                                     <p class="m-0">
                                         <t t-if="doc.items_stored"><input type="checkbox" checked="checked"/></t>
                                         <t t-else=""><input type="checkbox"/></t>
-                                        To store the item(s). Storage location:
+                                        To store the item(s). Storage Location:
                                         <t t-if="doc.storage_location"><span t-field="doc.storage_location"/></t>
                                         <t t-else="">...................</t>
                                     </p>
@@ -334,8 +373,11 @@
                                 </td>
                             </tr>
                             <tr>
+<!--                                <td colspan="3" style="height: 5rem;">-->
+<!--                                    <strong class="underline">Comment</strong> **: <span t-field="doc.status_comment"/>-->
+<!--                                </td>-->
                                 <td colspan="3" style="height: 5rem;">
-                                    <strong class="underline">Comment</strong> **: <span t-field="doc.status_comment"/>
+                                    <strong class="underline">Comment</strong> **:
                                 </td>
                             </tr>
                             <tr>
@@ -344,16 +386,22 @@
                                 <th width="25%" class="text-center p-0">Signature</th>
                             </tr>
                             <tr>
-                                <td>&amp;nbsp;</td>
-                                <td>&amp;nbsp;</td>
-                                <td>&amp;nbsp;</td>
+                                <td class="h-35">&amp;nbsp;</td>
+                                <td class="h-35">&amp;nbsp;</td>
+                                <td class="h-35">&amp;nbsp;</td>
                             </tr>
                             <tr>
                                 <th rowspan="3">Table update</th>
+<!--                                <td colspan="3">-->
+<!--                                    <p class="m-0">-->
+<!--                                        <t t-if="doc.table_update"><input type="checkbox" checked="checked"/></t>-->
+<!--                                        <t t-else=""><input type="checkbox"/></t>-->
+<!--                                        OP.1.2_TAB_002 Table for stock management for reagents and consumables-->
+<!--                                    </p>-->
+<!--                                </td>-->
                                 <td colspan="3">
                                     <p class="m-0">
-                                        <t t-if="doc.table_update"><input type="checkbox" checked="checked"/></t>
-                                        <t t-else=""><input type="checkbox"/></t>
+                                        <input type="checkbox"/>
                                         OP.1.2_TAB_002 Table for stock management for reagents and consumables
                                     </p>
                                 </td>
@@ -364,9 +412,9 @@
                                 <th width="25%" class="text-center p-0">Signature</th>
                             </tr>
                             <tr>
-                                <td>&amp;nbsp;</td>
-                                <td>&amp;nbsp;</td>
-                                <td>&amp;nbsp;</td>
+                                <td class="h-35">&amp;nbsp;</td>
+                                <td class="h-35">&amp;nbsp;</td>
+                                <td class="h-35">&amp;nbsp;</td>
                             </tr>
                         </tbody>
                     </table>

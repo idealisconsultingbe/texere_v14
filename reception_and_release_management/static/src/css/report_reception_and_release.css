@@ -4,10 +4,13 @@
 .underline {
     text-decoration: underline;
 }
-}.mt-8 {
+.mt-8 {
     margin-top: 3rem !important;
 }
-}.mb-8 {
+.mt-2 {
+    margin-top: 0.75rem !important;
+}
+.mb-8 {
     margin-bottom: 3rem !important;
 }
 .ml-8 {
@@ -15,6 +18,9 @@
 }
 .mb-16 {
     margin-bottom: 6rem !important;
+}
+.h-35 {
+    height: 3.5rem;
 }
 .br-gray {
     border-right: 1px solid Gray;

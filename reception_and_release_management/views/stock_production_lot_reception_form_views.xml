@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_product_lot_reception_form_view_form" model="ir.ui.view">
+        <field name="name">stock.product.lot.reception.form.view.form</field>
+        <field name="model">stock.production.lot.reception.form</field>
+        <field name="arch" type="xml">
+            <form string="Reception and Release Form" create="0">
+                <header>
+                    <button name="send_form" string="Send Form" context="{'send_form': True}" states="confirmed" type="object" class="oe_highlight" groups="base.group_user"/>
+                    <button name="sign_form" string="Sign" states="sent" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
+<!--                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" groups="base.group_user"/>-->
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,sent,validated"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="General Information">
+                            <field name="lot_id"/>
+                            <field name="picking_id" string="Transfer"/>
+                            <field name="purchase_id"/>
+                            <field name="partner_id" string="Supplier"/>
+                            <field name="product_id"/>
+                            <field name="product_categ_id"/>
+                        </group>
+                        <group string="Reception" col="4">
+                            <field name="arrival_date"/>
+                            <field name="expiration_date"/>
+                            <label for="product_qty"/>
+                            <div class="o_row">
+                                <field name="product_qty"/>
+                                <field name="product_uom_id"/>
+                            </div>
+                            <field name="packaging_state"/>
+                            <field name="specification_reference"/>
+                            <field name="supplier_consistency"/>
+                            <field name="items_consistency"/>
+                            <field name="form_appendix" string="CoA Appendix"/>
+                            <field name="temperature_appendix"/>
+                            <field name="materials_conformity"/>
+                            <field name="reception_comment" colspan="4" attrs="{
+                            'invisible': [('form_appendix', '!=', 'not_done'), ('temperature_appendix', '!=', 'not_done'), ('materials_conformity', '!=', 'no')], 'required': ['|', '|', ('form_appendix', '=', 'not_done'), ('temperature_appendix', '=', 'not_done'), ('materials_conformity', '=', 'no')]}"/>
+                        </group>
+                        <group string="Status">
+                            <field name="lot_status"/>
+                            <label for="items_stored"/>
+                            <div class="o_row">
+                                <field name="items_stored"/>
+                                <span attrs="{'invisible': [('items_stored', '=', False)]}"> Storage Location:</span>
+                                <field name="storage_location" attrs="{'invisible': [('items_stored', '=', False)], 'required': [('items_stored', '=', True)]}"/>
+                            </div>
+                            <label for="storage_temperature" attrs="{'invisible': [('items_stored', '=', False)]}"/>
+                            <div class="o_row" attrs="{'invisible': [('items_stored', '=', False)]}">
+                                <field name="storage_temperature" attrs="{'required': [('items_stored', '=', True)]}"/>
+                                <span attrs="{'invisible': [('storage_temperature', '!=', 'rt')]}">Value</span>
+                                <field name="manual_temperature" attrs="{'invisible': [('storage_temperature', '!=', 'rt')]}"/>
+                            </div>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_product_lot_reception_form_view_tree" model="ir.ui.view">
+        <field name="name">stock.product.lot.reception.form.view.tree</field>
+        <field name="model">stock.production.lot.reception.form</field>
+        <field name="arch" type="xml">
+            <tree string="Reception and Release Form" create="0">
+                <field name="name"/>
+                <field name="lot_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_reception_form" model="ir.actions.act_window">
+        <field name="name">Release and Reception Form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.production.lot.reception.form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('stock_product_lot_reception_form_view_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('stock_product_lot_reception_form_view_form')})]"/>
+    </record>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--        When rendering qweb, record attachment is automatically done if attachment is set on report action-->
+<!--            attachment="'[{}]Reception_and_release_form-lot{}.pdf'.format(object.state.upper(), (object.lot_id.name).replace('/', ''))"-->
+        <report
+            id="action_report_reception_and_release_form"
+            string="Reception &amp; Release Form"
+            model="stock.production.lot.reception.form"
+            report_type="qweb-pdf"
+            file="reception_and_release_management.report_lot_reception_and_release"
+            name="reception_and_release_management.report_lot_reception_and_release"
+            print_report_name="'Reception and Release form - Lot %s' % (object.lot_id.name)"
+        />
+
+    </data>
+</odoo>
