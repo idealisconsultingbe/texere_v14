@@ -98,6 +98,7 @@ class LotReceptionForm(models.Model):
             'signed_by': self.env.user.id,
             'signed_on': fields.Datetime.now(),
             'signature': self.env.user.sign_signature,
+            'lot_status': self.env.context.get('form_lot_status', 'released'),
             'state': 'validated',
         })
         pdf = self.env.ref('reception_and_release_management.action_report_reception_and_release_form')._render(self.id)
@@ -114,6 +115,16 @@ class LotReceptionForm(models.Model):
         self.message_post(body=body, attachment_ids=[attachment.id])
 
     def send_form(self):
+
+        def get_pickings(pick):
+            pickings = pick
+            move_lines = pick.move_lines
+            for move in move_lines:
+                dest_move_lines = move.move_dest_ids
+                for dest_move_line in dest_move_lines:
+                    pickings |= get_pickings(dest_move_line.picking_id)
+            return pickings
+
         self.ensure_one()
         # change record state
         self.write({
@@ -126,8 +137,6 @@ class LotReceptionForm(models.Model):
         if self.env.context.get('send_form'):
             # attach pdf to current record
             # When rendering qweb, record attachment is automatically done if attachment is set on report action
-
-            # pdf = self.env.ref('reception_and_release_management.action_report_reception_and_release_form').render_qweb_pdf(self.id)
             pdf = self.env.ref('reception_and_release_management.action_report_reception_and_release_form')._render(self.id)
             b64_pdf = base64.b64encode(pdf[0])
             attachment = self.env['ir.attachment'].create({
@@ -143,20 +152,34 @@ class LotReceptionForm(models.Model):
             self.message_post(body=body, attachment_ids=[attachment.id])
 
             # notify control point followers
-            url = '/web#{}'.format(url_encode({
+            lot_url = '/web#{}'.format(url_encode({
                 'action': self.env.ref('stock.action_production_lot_form').id,
                 'id': self.lot_id.id,
                 'active_model': 'stock.production.lot',
                 'menu_id': self.env.ref('stock.menu_stock_root').id,
                 'view_type': 'form'
             }))
-            body = _('Reception and release form of lot <a href="{}">{}</a> is waiting for a validation').format(url, self.lot_id.name)
-            # TODO= FIX THIS ! control point not reachable due to routes
-            control_points = self.picking_id.mapped('check_ids.point_id')
-            for point in control_points:
+            form_url = '/web#{}'.format(url_encode({
+                'action': self.env.ref('reception_and_release_management.action_reception_form').id,
+                'id': self.id,
+                'active_model': 'stock.production.lot.reception.form',
+                'menu_id': self.env.ref('reception_and_release_management.reception_and_release_form_menu').id,
+                'view_type': 'form'
+            }))
+            body = _('Reception and release form <a href="{}">{}</a> of lot <a href="{}">{}</a> is waiting for a validation').format(form_url, self.name, lot_url, self.lot_id.name)
+            pickings = get_pickings(self.picking_id)
+            checks = self.env['quality.check'].search([('picking_id', 'in', pickings.ids), ('quality_state', '=', 'none')])
+            for check in checks:
+                check.message_post(
+                    subject=_('R&R form to Validate'),
+                    body=body,
+                    message_type='comment',
+                    subtype_xmlid='mail.mt_note'
+                )
+            for point in checks.mapped('point_id'):
                 point.message_post(
                     subject=_('R&R form to Validate'),
                     body=body,
-                    subtype='mail.mt_comment',
+                    subtype_xmlid='mail.mt_comment',
                     email_layout_xmlid='mail.mail_notification_light',
                 )

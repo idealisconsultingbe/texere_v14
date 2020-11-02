@@ -6,7 +6,7 @@
             <field name="model">create.reception.form</field>
             <field name="arch" type="xml">
                 <form string="Create Reception and Release Form">
-                    <separator string="Lots to process"/>
+                    <separator string="Lots to Process"/>
                     <group>
                         <group colspan="2">
                             <field name="available_lot_ids" invisible="1"/>
@@ -16,6 +16,7 @@
 
                         <group attrs="{'invisible': [('hide_edition_fields', '=', False)]}">
                             <field name="reception_form_ids" options="{'no_create': True}" attrs="{'required': [('hide_edition_fields', '=', True)]}" domain="[('lot_id', 'in', lot_ids)]" widget="many2many_tags"/>
+                            <field name="lot_status" attrs="{'required': [('hide_edition_fields', '=', True)]}"/>
                         </group>
 
                         <group string="Reception" attrs="{'invisible': [('hide_edition_fields', '=', True)]}">
@@ -25,17 +26,18 @@
                             <field name="supplier_consistency" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
                             <field name="items_consistency" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
                             <field name="materials_conformity" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
-                            <field name="reception_comment" attrs="{'invisible': [('form_appendix', '!=', 'not_done'), ('temperature_appendix', '!=', 'not_done'), ('materials_conformity', '!=', 'no')], 'required': ['|', '|', ('form_appendix', '=', 'not_done'), ('temperature_appendix', '=', 'not_done'), ('materials_conformity', '=', 'no')]}"/>
+                            <field name="reception_comment" attrs="{'invisible': [('packaging_state', '!=', 'damaged'), ('supplier_consistency', '!=', 'different'), ('items_consistency', '!=', 'different'), ('form_appendix', '!=', 'not_done'), ('temperature_appendix', '!=', 'not_done'), ('materials_conformity', '!=', 'no')],
+                            'required': ['|', '|', '|', '|', '|', ('form_appendix', '=', 'not_done'), ('temperature_appendix', '=', 'not_done'), ('materials_conformity', '=', 'no'), ('packaging_state', '=', 'damaged'), ('supplier_consistency', '=', 'different'), ('items_consistency', '=', 'different')]}"/>
                         </group>
-                        <group string="Status" attrs="{'invisible': [('hide_edition_fields', '=', True)]}">
-                            <field name="lot_status" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
-                            <label for="items_stored"/>
-                            <div class="o_row">
-                                <field name="items_stored"/>
-                                <span attrs="{'invisible': [('items_stored', '=', False)]}"> Storage Location:</span>
-                                <field name="storage_location" attrs="{'invisible': [('items_stored', '=', False)], 'required': [('items_stored', '=', True)]}"/>
-                            </div>
-                        </group>
+<!--                        <group string="Status" attrs="{'invisible': [('hide_edition_fields', '=', True)]}">-->
+<!--                            <field name="lot_status" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>-->
+<!--                            <label for="items_stored"/>-->
+<!--                            <div class="o_row">-->
+<!--                                <field name="items_stored"/>-->
+<!--                                <span attrs="{'invisible': [('items_stored', '=', False)]}"> Storage Location:</span>-->
+<!--                                <field name="storage_location" attrs="{'invisible': [('items_stored', '=', False)], 'required': [('items_stored', '=', True)]}"/>-->
+<!--                            </div>-->
+<!--                        </group>-->
                     </group>
                     <footer>
                         <button name="create_reception_forms" string="Confirm and Send" context="{'send_form': True}" attrs="{'invisible': [('hide_edition_fields', '=', True)]}" colspan="1" type="object" class="btn-primary"/>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Form Views -->
     <record id="stock_product_lot_reception_form_view_form" model="ir.ui.view">
         <field name="name">stock.product.lot.reception.form.view.form</field>
         <field name="model">stock.production.lot.reception.form</field>
@@ -7,7 +8,8 @@
             <form string="Reception and Release Form" create="0">
                 <header>
                     <button name="send_form" string="Send Form" context="{'send_form': True}" states="confirmed" type="object" class="oe_highlight" groups="base.group_user"/>
-                    <button name="sign_form" string="Sign" states="sent" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
+                    <button name="sign_form" string="Release and Sign" states="sent" context="{'form_lot_status': 'released'}" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
+                    <button name="sign_form" string="Reject and Sign" states="sent" context="{'form_lot_status': 'rejected'}" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
 <!--                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" groups="base.group_user"/>-->
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,sent,validated"/>
                 </header>
@@ -27,6 +29,21 @@
                             <field name="product_id"/>
                             <field name="product_categ_id"/>
                         </group>
+                        <group string="Status">
+                            <field name="lot_status"/>
+<!--                            <label for="items_stored"/>-->
+<!--                            <div class="o_row">-->
+<!--                                <field name="items_stored"/>-->
+<!--                                <span attrs="{'invisible': [('items_stored', '=', False)]}"> Storage Location:</span>-->
+<!--                                <field name="storage_location" attrs="{'invisible': [('items_stored', '=', False)], 'required': [('items_stored', '=', True)]}"/>-->
+<!--                            </div>-->
+                            <label for="storage_temperature" attrs="{'invisible': [('storage_temperature', '=', False)]}"/>
+                            <div class="o_row" attrs="{'invisible': [('storage_temperature', '=', False)]}">
+                                <field name="storage_temperature"/>
+                                <span attrs="{'invisible': [('storage_temperature', '!=', 'rt')]}">Value</span>
+                                <field name="manual_temperature" attrs="{'invisible': [('storage_temperature', '!=', 'rt')]}"/>
+                            </div>
+                        </group>
                         <group string="Reception" col="4">
                             <field name="arrival_date"/>
                             <field name="expiration_date"/>
@@ -45,21 +62,6 @@
                             <field name="reception_comment" colspan="4" attrs="{
                             'invisible': [('form_appendix', '!=', 'not_done'), ('temperature_appendix', '!=', 'not_done'), ('materials_conformity', '!=', 'no')], 'required': ['|', '|', ('form_appendix', '=', 'not_done'), ('temperature_appendix', '=', 'not_done'), ('materials_conformity', '=', 'no')]}"/>
                         </group>
-                        <group string="Status">
-                            <field name="lot_status"/>
-                            <label for="items_stored"/>
-                            <div class="o_row">
-                                <field name="items_stored"/>
-                                <span attrs="{'invisible': [('items_stored', '=', False)]}"> Storage Location:</span>
-                                <field name="storage_location" attrs="{'invisible': [('items_stored', '=', False)], 'required': [('items_stored', '=', True)]}"/>
-                            </div>
-                            <label for="storage_temperature" attrs="{'invisible': [('items_stored', '=', False)]}"/>
-                            <div class="o_row" attrs="{'invisible': [('items_stored', '=', False)]}">
-                                <field name="storage_temperature" attrs="{'required': [('items_stored', '=', True)]}"/>
-                                <span attrs="{'invisible': [('storage_temperature', '!=', 'rt')]}">Value</span>
-                                <field name="manual_temperature" attrs="{'invisible': [('storage_temperature', '!=', 'rt')]}"/>
-                            </div>
-                        </group>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -71,6 +73,7 @@
         </field>
     </record>
 
+    <!-- Tree Views -->
     <record id="stock_product_lot_reception_form_view_tree" model="ir.ui.view">
         <field name="name">stock.product.lot.reception.form.view.tree</field>
         <field name="model">stock.production.lot.reception.form</field>
@@ -78,11 +81,32 @@
             <tree string="Reception and Release Form" create="0">
                 <field name="name"/>
                 <field name="lot_id"/>
-                <field name="state"/>
+                <field name="lot_status" string="Lot Status"/>
+                <field name="state" string="Form Status"/>
             </tree>
         </field>
     </record>
 
+    <!-- Search Views -->
+    <record id="reception_and_release_form_view_search" model="ir.ui.view">
+        <field name="name">reception.and.release.form.view.search</field>
+        <field name="model">stock.production.lot.reception.form</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Form Name"/>
+                <field name="lot_id" string="Lot Name" filter_domain="[('lot_id.name', 'ilike', self)]"/>
+                <separator />
+                <filter string="Confirmed" name="filter_rr_confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter string="Sent" name="filter_rr_sent" domain="[('state', '=', 'sent')]"/>
+                <filter string="Validated" name="filter_rr_validated" domain="[('state', '=', 'validated')]"/>
+                <separator />
+                <filter string="Released" name="filter_rr_lot_released" domain="[('lot_status', '=', 'released')]"/>
+                <filter string="Rejected" name="filter_rr_lot_rejected" domain="[('lot_status', '=', 'rejected')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
     <record id="action_reception_form" model="ir.actions.act_window">
         <field name="name">Release and Reception Form</field>
         <field name="type">ir.actions.act_window</field>
@@ -93,4 +117,8 @@
                           (0, 0, {'view_mode': 'tree', 'view_id': ref('stock_product_lot_reception_form_view_tree')}),
                           (0, 0, {'view_mode': 'form', 'view_id': ref('stock_product_lot_reception_form_view_form')})]"/>
     </record>
+
+    <!-- Menu -->
+    <menuitem id="reception_and_release_form_menu" name="Reception and Release Forms" action="action_reception_form"
+        parent="stock.menu_stock_inventory_control" sequence="999"/>
 </odoo>
