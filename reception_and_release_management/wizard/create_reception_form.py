@@ -50,7 +50,7 @@ class CreateReceptionForm(models.TransientModel):
     def validate_reception_forms(self):
         self.ensure_one()
         for form in self.reception_form_ids:
-            form.sign_form()
+            form.with_context(form_lot_status=self.lot_status).sign_form()
         return {}
 
     def create_reception_forms(self):
