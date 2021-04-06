@@ -18,7 +18,7 @@ class Picking(models.Model):
     def _compute_count_lots_to_process(self):
         for pick in self:
             done_move_lines = pick.move_line_ids.filtered(lambda ml: ml.state == 'done')
-            pick.count_lots_to_process = len(done_move_lines.mapped('lot_id').filtered(lambda lot: lot.reception_form_count <= 0))
+            pick.count_lots_to_process = len(done_move_lines.mapped('lot_id').filtered(lambda lot: lot.is_form_mandatory and lot.reception_form_count == 0))
 
     def open_create_reception_form(self):
         self.ensure_one()
@@ -27,7 +27,7 @@ class Picking(models.Model):
             lot_ids = self.move_line_ids.mapped('lot_id').filtered(lambda lot: lot.form_to_validate_count > 0).ids
         else:
             done_move_lines = self.move_line_ids.filtered(lambda ml: ml.state == 'done')
-            lot_ids = done_move_lines.mapped('lot_id').filtered(lambda lot: lot.reception_form_count == 0).ids
+            lot_ids = done_move_lines.mapped('lot_id').filtered(lambda lot: lot.is_form_mandatory and lot.reception_form_count == 0).ids
         action.update({
             'context': {
                 'default_picking_id': self.id,
@@ -46,6 +46,6 @@ class Picking(models.Model):
             lot_ids = self.move_line_ids.mapped('lot_id').filtered(lambda lot: lot.form_to_validate_count > 0).ids
         else:
             done_move_lines = self.move_line_ids.filtered(lambda ml: ml.state == 'done')
-            lot_ids = done_move_lines.mapped('lot_id').filtered(lambda lot: lot.reception_form_count == 0).ids
+            lot_ids = done_move_lines.mapped('lot_id').filtered(lambda lot: lot.is_form_mandatory and lot.reception_form_count == 0).ids
         result['domain'] = "[('id', 'in', " + str(lot_ids) + ")]"
         return result

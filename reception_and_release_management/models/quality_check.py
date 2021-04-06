@@ -17,7 +17,6 @@ class QualityCheck(models.Model):
                 lots_to_validate_count, ' ,'.join(pickings.mapped('name'))))
 
     def check_form_to_process(self):
-        # TODO this check is not mandatory for furniture category
         def get_orig_pickings(move):
             pickings = self.env['stock.picking']
             if move.move_orig_ids:
@@ -30,7 +29,7 @@ class QualityCheck(models.Model):
         pickings = self.env['stock.picking']
         for move in self.picking_id.mapped('move_lines'):  # there may be several records (no ensure_one() or iteration)
             pickings |= get_orig_pickings(move)
-        if pickings:
+        if pickings and any(pickings.mapped('count_lots_to_process')):
             lots_to_process_count = sum(pickings.mapped('count_lots_to_process'))
             raise UserError(_(
                 'You still have {} Reception and Release form(s) to fill before processing this quality check (see picking(s): {})').format(

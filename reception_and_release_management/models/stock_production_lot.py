@@ -10,6 +10,12 @@ class ProductionLot(models.Model):
     reception_form_ids = fields.One2many('stock.production.lot.reception.form', 'lot_id', string='Reception Forms')
     reception_form_count = fields.Integer(string='Reception Form Count', compute='_compute_reception_form_count', store=True)
     form_to_validate_count = fields.Integer(string='Waiting for Validation Form Count', compute='_compute_form_to_validate_count', store=True)
+    is_form_mandatory = fields.Boolean(string='Form Creation Mandatory', compute='_compute_is_form_mandatory', store=True)
+
+    @api.depends('product_id.categ_id.critical_level')
+    def _compute_is_form_mandatory(self):
+        for lot in self:
+            lot.is_form_mandatory = lot.product_id.categ_id.critical_level in ['less_critical', 'intermediary', 'critical', 'femoral']
 
     @api.depends('reception_form_ids', 'reception_form_ids.state')
     def _compute_form_to_validate_count(self):
