@@ -6,6 +6,7 @@ from odoo import api, fields, models
 class Picking(models.Model):
     _inherit = 'stock.picking'
 
+    count_lots_to_send = fields.Integer(string='Lots to Send', compute='_compute_count_lots_to_send', store=True, tracking=True)
     count_lots_to_process = fields.Integer(string='Lots to Process', compute='_compute_count_lots_to_process', store=True, tracking=True)
     count_lots_to_validate = fields.Integer(string='Lots to Validate', compute='_compute_count_lots_to_validate', store=True, tracking=True)
 
@@ -13,6 +14,11 @@ class Picking(models.Model):
     def _compute_count_lots_to_validate(self):
         for pick in self:
             pick.count_lots_to_validate = len(pick.move_line_ids.mapped('lot_id').filtered(lambda lot: lot.form_to_validate_count > 0))
+
+    @api.depends('move_line_ids.lot_id.form_to_send_count')
+    def _compute_count_lots_to_send(self):
+        for pick in self:
+            pick.count_lots_to_send = len(pick.move_line_ids.mapped('lot_id').filtered(lambda lot: lot.form_to_send_count > 0))
 
     @api.depends('move_line_ids.lot_id.reception_form_count', 'move_line_ids.state')
     def _compute_count_lots_to_process(self):

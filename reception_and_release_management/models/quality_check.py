@@ -14,7 +14,7 @@ class QualityCheck(models.Model):
             lots_to_validate_count = sum(pickings.mapped('count_lots_to_validate'))
             raise UserError(_(
                 'You still have {} Reception and Release form(s) to validate before processing this quality check (see picking(s): {})').format(
-                lots_to_validate_count, ' ,'.join(pickings.mapped('name'))))
+                lots_to_validate_count, ', '.join(pickings.mapped('name'))))
 
     def check_form_to_process(self):
         def get_orig_pickings(move):
@@ -33,7 +33,14 @@ class QualityCheck(models.Model):
             lots_to_process_count = sum(pickings.mapped('count_lots_to_process'))
             raise UserError(_(
                 'You still have {} Reception and Release form(s) to fill before processing this quality check (see picking(s): {})').format(
-                lots_to_process_count, ' ,'.join(pickings.filtered(lambda p: p.count_lots_to_process > 0).mapped('name'))))
+                lots_to_process_count, ', '.join(pickings.filtered(lambda p: p.count_lots_to_process > 0).mapped('name'))))
+
+        if pickings and any(pickings.mapped('count_lots_to_send')):
+            lots_to_send_count = sum(pickings.mapped('count_lots_to_send'))
+            lots_to_send = pickings.mapped('move_line_ids.lot_id').filtered(lambda lot: lot.form_to_send_count > 0)
+            raise UserError(_(
+                'You still have {} Reception and Release form(s) to send before processing this quality check (see lot(s): {})').format(
+                lots_to_send_count, ', '.join(lots_to_send.mapped('name'))))
 
     def do_pass(self):
         self.check_form_to_process()

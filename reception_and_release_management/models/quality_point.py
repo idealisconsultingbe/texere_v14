@@ -15,11 +15,11 @@ class ProductTemplate(models.Model):
 
     @api.onchange('is_form_validation')
     def _onchange_is_form_validation(self):
-        if self.product_ids[0].categ_id.critical_level in ['intermediary', 'critical', 'femoral'] and not self.is_form_validation:
+        if self.product_ids and self.product_ids[0].categ_id.critical_level in ['intermediary', 'critical', 'femoral'] and not self.is_form_validation:
             return {
                 'warning': {
                     'title': _('Warning!'),
-                    'message': _('Form validation is mandatory for products with intermediary, critical or fermoral heads critical levels.')}}
+                    'message': _('Form validation is mandatory for products with intermediary, critical or femoral heads critical levels.')}}
 
     @api.depends('company_id', 'product_ids')
     def _compute_available_product_ids(self):
@@ -34,4 +34,4 @@ class ProductTemplate(models.Model):
             if record.product_ids and len(record.product_ids.mapped('categ_id.critical_level')) > 1:
                 raise ValidationError(_('It is not possible to have a control point on products with different critical levels.'))
             if record.product_ids and self.product_ids[0].categ_id.critical_level in ['intermediary', 'critical', 'femoral'] and not record.is_form_validation:
-                raise ValidationError(_('Form validation is mandatory for products with intermediary, critical or fermoral heads critical levels.'))
+                raise ValidationError(_('Form validation is mandatory for products with intermediary, critical or femoral heads critical levels.'))
