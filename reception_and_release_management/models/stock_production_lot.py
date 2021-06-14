@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class ProductionLot(models.Model):
     _inherit = 'stock.production.lot'
+
+    product_critical_level = fields.Selection(related='product_id.categ_id.critical_level', string='Product Critical Level')
 
     reception_form_ids = fields.One2many('stock.production.lot.reception.form', 'lot_id', string='Reception Forms')
     reception_form_count = fields.Integer(string='Reception Form Count', compute='_compute_form_count', store=True)
@@ -33,6 +36,14 @@ class ProductionLot(models.Model):
             lot.form_to_validate_count = forms_to_validate.get(lot.id, 0)
             lot.reception_form_count = forms.get(lot.id, 0)
             lot.form_to_send_count = forms_to_send.get(lot.id, 0)
+
+    @api.constrains('reception_form_ids')
+    def _check_forms(self):
+        for lot in self:
+            if lot.reception_form_ids and len(lot.reception_form_ids.filtered(lambda rr: rr.type == 'rc_with_qc')) > 1:
+                raise UserError(_('Lot should have only one RC with QC (lot: {}).').format(lot.name))
+            if lot.reception_form_ids and lot.reception_form_ids.filtered(lambda rr: rr.type == 'qc_result') and not lot.reception_form_ids.filtered(lambda rr: rr.type == 'rc_with_qc'):
+                raise UserError(_('Lot with QC results should have a RC with QC (lot: {}).').format(lot.name))
 
     def action_view_reception_forms(self):
         """ Action used on button box to open forms """

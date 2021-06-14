@@ -8,3 +8,4 @@ from . import stock_production_lot
 from . import quality_point
 from . import quality_check
 from . import product_category
+from . import reception_form_action

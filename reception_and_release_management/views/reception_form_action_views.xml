@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="reception_form_action_view_tree" model="ir.ui.view">
+        <field name="name">reception.form.action.view.tree</field>
+        <field name="model">reception.form.action</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" duplicate="1">
+                <field name="sequence" widget="handle"/>
+                <field name="form_type" string="Type"/>
+                <field name="action" string="Action"/>
+                <field name="form_state" string="Condition"/>
+                <field name="picking_type_id" string="Operation Type" attrs="{'required': [('action', '=', 'lock')], 'invisible': [('action', '=', 'notify')]}"/>
+                <field name="group_id" string="User Group" attrs="{'required': [('action', '=', 'notify')], 'invisible': [('action', '=', 'lock')]}"/>
+                <field name="company_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_reception_form_action" model="ir.actions.act_window">
+        <field name="name">Release and Reception Form Actions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">reception.form.action</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="reception_and_release_form_menu" name="Release and Reception Forms"
+        parent="stock.menu_stock_config_settings" sequence="5"/>
+    <menuitem id="reception_and_release_form_action_menu" name="Actions" action="action_reception_form_action"
+        parent="reception_and_release_management.reception_and_release_form_menu" sequence="1" groups="quality.group_quality_user"/>
+
+</odoo>

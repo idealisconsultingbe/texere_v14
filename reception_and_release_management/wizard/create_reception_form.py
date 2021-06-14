@@ -6,6 +6,7 @@ from odoo import api, fields, models, _
 
 class CreateReceptionForm(models.TransientModel):
     _name = 'create.reception.form'
+    _description = 'Creation of Release and Reception Form Wizard'
 
     # @api.model
     # def default_get(self, fields_list):
@@ -15,8 +16,10 @@ class CreateReceptionForm(models.TransientModel):
     #         result['packaging_state'] = reception_form.packaging_state
     #     return result
 
+    type = fields.Selection(selection=[('rc_without_qc', 'RC Without QC'), ('rc_with_qc', 'RC With QC')], string='Type', required=True, default='rc_without_qc')
+    all_lot_ids = fields.Many2many('stock.production.lot', 'all_stock_production_lot_reception_form_rel', 'reception_form_id', 'lot_id', string='All Lots')
     available_lot_ids = fields.Many2many('stock.production.lot', 'available_stock_production_lot_reception_form_rel', 'reception_form_id', 'lot_id', string='Available Lots')
-    lot_ids = fields.Many2many('stock.production.lot', 'stock_production_lot_reception_form_wizard_rel', 'wizard_id', 'lot_id', string='Lots', required=True)
+    lot_ids = fields.Many2many('stock.production.lot', 'stock_production_lot_reception_form_wizard_rel', 'wizard_id', 'lot_id', string='Lots', domain="[('id', 'in', available_lot_ids)]", required=True)
     picking_id = fields.Many2one('stock.picking', string='Pickings', required=True)
 
     # validation
@@ -42,6 +45,15 @@ class CreateReceptionForm(models.TransientModel):
         if self.form_appendix != 'not_done' and self.temperature_appendix != 'not_done' and self.materials_conformity != 'no':
             self.reception_comment = ''
 
+    @api.onchange('type')
+    def _onchange_type(self):
+        if self.type == 'rc_without_qc':
+            self.lot_ids = False
+            self.available_lot_ids = self.all_lot_ids.filtered(lambda lot: lot.product_critical_level in ['furniture', 'less_critical', 'intermediary'])
+        elif self.type == 'rc_with_qc':
+            self.lot_ids = False
+            self.available_lot_ids = self.all_lot_ids.filtered(lambda lot: lot.product_critical_level == 'critical')
+
     # @api.onchange('items_stored')
     # def _onchange_storage_location(self):
     #     if not self.items_stored:
@@ -58,6 +70,7 @@ class CreateReceptionForm(models.TransientModel):
         for lot in self.lot_ids:
             vals = {
                 'state': 'confirmed',
+                'type': self.type,
                 'picking_id': self.picking_id.id,
                 'lot_id': lot.id,
                 'arrival_date': self.picking_id.date_done.date(),
@@ -78,7 +91,14 @@ class CreateReceptionForm(models.TransientModel):
                 'product_qty': lot.product_qty,
                 'company_id': lot.company_id.id
             }
-            form = self.env['stock.production.lot.reception.form'].create(vals)
+            forms = self.env['stock.production.lot.reception.form'].create(vals)
+            # chatter notification
+            body = _('{} {} been created:\n').format(len(forms), _("form has") if len(forms) <= 1 else _("forms have"))
+            for form in forms:
+                form_url = f'<a href=# data-oe-model=stock.production.lot.reception.form data-oe-id={form.id}>{form.name}</a>\n'
+                body = body + form_url
+            self.picking_id.message_post(body=body)
+
             if self.env.context.get('send_form'):
-                form.send_form()
+                forms.send_form()
         return {}

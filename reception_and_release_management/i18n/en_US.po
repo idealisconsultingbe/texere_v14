@@ -409,7 +409,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Transfers %s: You need to supply a Texere SH ID for products %s."
+"Transfers %s: You need to supply a Texere FH ID for products %s."
 
 #. module: stock_barcode
 #: model:ir.module.module,description:base.module_pos_epson_printer_restaurant
@@ -6058,7 +6058,7 @@ msgstr ""
 #: code:addons/stock/models/stock_production_lot.py:0
 #, python-format
 msgid " - Product: %s, Serial Number: %s"
-msgstr " - Product: %s, Texere SH ID: %s"
+msgstr " - Product: %s, Texere FH ID: %s"
 
 #. module: mrp
 #: code:addons/mrp/models/stock_rule.py:0
@@ -6823,7 +6823,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.actions.report,print_report_name:stock.action_report_lot_label
 msgid "'Lot-Serial - %s' % object.name"
-msgstr "'Texere SH ID - %s' % object.name"
+msgstr "'Texere FH ID - %s' % object.name"
 
 #. module: stock_barcode
 #: model:ir.actions.report,print_report_name:stock.action_report_picking_type_label
@@ -9446,12 +9446,12 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-barcode mr-3\" title=\"Serial/Lot Number\" attrs=\"{'invisible': [('tracking', '=', 'none')]}\"/>"
-msgstr "<i class=\"fa fa-fw fa-lg fa-barcode mr-3\" title=\"Texere SH ID\" attrs=\"{'invisible': [('tracking', '=', 'none')]}\"/>"
+msgstr "<i class=\"fa fa-fw fa-lg fa-barcode mr-3\" title=\"Texere FH ID\" attrs=\"{'invisible': [('tracking', '=', 'none')]}\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-barcode mr-3\" title=\"Serial/Lot Number\"/>"
-msgstr "<i class=\"fa fa-fw fa-lg fa-barcode mr-3\" title=\"Texere SH ID\"/>"
+msgstr "<i class=\"fa fa-fw fa-lg fa-barcode mr-3\" title=\"Texere FH ID\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -10822,7 +10822,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.view_stock_move_operations
 msgid "<span>Assign Serial Numbers</span>"
-msgstr "<span>Assign Texere SH IDs</span>"
+msgstr "<span>Assign Texere FH IDs</span>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -11291,7 +11291,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.report_inventory model_terms:ir.ui.view,arch_db:stock.report_picking
 msgid "<strong>Lot/Serial Number</strong>"
-msgstr "<strong>Texere SH ID</strong>"
+msgstr "<strong>Texere FH ID</strong>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.view_stock_warehouse_orderpoint_kanban
@@ -16386,7 +16386,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.actions.act_window,help:stock.action_production_lot_form
 msgid "Add a lot/serial number"
-msgstr "Add a Texere SH ID"
+msgstr "Add a Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.module.module,summary:base.module_base_address_city
@@ -17893,7 +17893,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,help:mrp.field_mrp_production__use_create_components_lots model:ir.model.fields,help:mrp.field_mrp_workorder__use_create_components_lots model:ir.model.fields,help:mrp.field_stock_picking_type__use_create_components_lots
 msgid "Allow to create new lot/serial numbers for the components"
-msgstr "Allow to create new Texere SH IDs for the components"
+msgstr "Allow to create new Texere FH IDs for the components"
 
 #. module: stock_barcode
 #: model:res.groups,name:account_accountant.group_fiscal_year
@@ -19870,7 +19870,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock.act_assign_serial_numbers model_terms:ir.ui.view,arch_db:stock.view_assign_serial_numbers model_terms:ir.ui.view,arch_db:stock.view_picking_form model_terms:ir.ui.view,arch_db:stock.view_stock_move_operations
 msgid "Assign Serial Numbers"
-msgstr "Assign Texere SH IDs"
+msgstr "Assign Texere FH IDs"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__manual_action_responsible_id
@@ -23278,7 +23278,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock.selection__product_template__tracking__lot
 msgid "By Lots"
-msgstr "By Texere SH IDs"
+msgstr "By Texere FH IDs"
 
 #. module: stock_barcode
 #: model:ir.filters,name:account.filter_invoice_product
@@ -23298,7 +23298,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock.selection__product_template__tracking__serial
 msgid "By Unique Serial Number"
-msgstr "By Unique Texere SH ID"
+msgstr "By Unique Texere FH ID"
 
 #. module: sign
 #. openerp-web
@@ -26723,7 +26723,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
 msgid "Component Lot/Serial"
-msgstr "Component Texere SH ID"
+msgstr "Component Texere FH ID"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_report_product_product_replenishment
@@ -28581,13 +28581,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock.field_stock_move_line__picking_type_use_create_lots model:ir.model.fields,field_description:stock.field_stock_picking__use_create_lots
 #: model:ir.model.fields,field_description:stock.field_stock_picking_type__use_create_lots
 msgid "Create New Lots/Serial Numbers"
-msgstr "Create New Texere SH IDs"
+msgstr "Create New Texere FH IDs"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__use_create_components_lots model:ir.model.fields,field_description:mrp.field_mrp_workorder__use_create_components_lots
 #: model:ir.model.fields,field_description:mrp.field_stock_picking_type__use_create_components_lots
 msgid "Create New Lots/Serial Numbers for Components"
-msgstr "Create New Texere SH IDs for Components"
+msgstr "Create New Texere FH IDs for Components"
 
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:mail.selection__ir_actions_server__state__next_activity
@@ -29413,7 +29413,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:mrp.mrp_production_form_view
 msgid "Creates a new serial/lot number"
-msgstr "Creates a new Texere SH ID"
+msgstr "Creates a new Texere FH ID"
 
 #. module: base_import
 #. openerp-web
@@ -33240,7 +33240,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_stock_move__display_assign_serial
 msgid "Display Assign Serial"
-msgstr "Display Assign Texere SH ID"
+msgstr "Display Assign Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_stock_production_lot__display_complete
@@ -33250,7 +33250,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_res_config_settings__group_lot_on_delivery_slip
 msgid "Display Lots & Serial Numbers on Delivery Slips"
-msgstr "Display Texere SH IDs on Delivery Slips"
+msgstr "Display Texere FH IDs on Delivery Slips"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_model_choice
@@ -33474,7 +33474,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:res.groups,name:stock.group_lot_on_delivery_slip
 msgid "Display Serial & Lot Number in Delivery Slips"
-msgstr "Display Texere SH ID in Delivery Slips"
+msgstr "Display Texere FH ID in Delivery Slips"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:account.field_account_move_line__display_type model:ir.model.fields,field_description:account_reports.field_account_accounting_report__display_type
@@ -33598,7 +33598,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__show_lot_ids
 msgid "Display the serial number shortcut on the moves"
-msgstr "Display the Texere SH ID shortcut on the moves"
+msgstr "Display the Texere FH ID shortcut on the moves"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__displayed_image_id
@@ -36766,25 +36766,25 @@ msgstr ""
 #: code:addons/stock/models/stock_move.py:0
 #, python-format
 msgid "Existing Serial Numbers (%s). Please correct the serial numbers encoded."
-msgstr "Existing Texere SH IDs (%s). Please correct the Texere SH IDs encoded."
+msgstr "Existing Texere FH IDs (%s). Please correct the Texere FH IDs encoded."
 
 #. module: stock
 #: code:addons/stock/models/stock_move_line.py:0
 #, python-format
 msgid "Existing Serial number (%s). Please correct the serial number encoded."
-msgstr "Existing Texere SH ID (%s). Please correct the Texere SH ID encoded."
+msgstr "Existing Texere FH ID (%s). Please correct the Texere FH ID encoded."
 
 #. module: mrp
 #: code:addons/mrp/models/mrp_production.py:0
 #, python-format
 msgid "Existing Serial number (%s). Please correct the serial numbers encoded."
-msgstr "Existing Texere SH ID (%s). Please correct the Texere SH IDs encoded."
+msgstr "Existing Texere FH ID (%s). Please correct the Texere FH IDs encoded."
 
 #. module: stock
 #: code:addons/stock/models/stock_move.py:0
 #, python-format
 msgid "Existing Serial numbers (%s). Please correct the serial numbers encoded."
-msgstr "Existing Texere SH IDs (%s). Please correct the Texere SH ID encoded."
+msgstr "Existing Texere FH IDs (%s). Please correct the Texere FH ID encoded."
 
 #. module: stock
 #. openerp-web
@@ -38213,7 +38213,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:mrp.field_stock_move__order_finished_lot_ids
 msgid "Finished Lot/Serial Number"
-msgstr "Finished Texere SH ID"
+msgstr "Finished Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:mrp.field_mrp_workorder__move_finished_ids
@@ -43070,7 +43070,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock.field_stock_picking__show_reserved model:ir.model.fields,help:stock.field_stock_picking_type__show_reserved
 msgid "If this checkbox is ticked, Odoo will automatically pre-fill the detailed operations with the corresponding products, locations and lot/serial numbers."
-msgstr "If this checkbox is ticked, Odoo will automatically pre-fill the detailed operations with the corresponding products, locations and Texere SH IDs."
+msgstr "If this checkbox is ticked, Odoo will automatically pre-fill the detailed operations with the corresponding products, locations and Texere FH IDs."
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:account.field_account_bank_statement_line__to_check model:ir.model.fields,help:account.field_account_move__to_check model:ir.model.fields,help:account.field_account_payment__to_check
@@ -43100,12 +43100,12 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock.field_stock_move_line__picking_type_use_create_lots model:ir.model.fields,help:stock.field_stock_picking__use_create_lots model:ir.model.fields,help:stock.field_stock_picking_type__use_create_lots
 msgid "If this is checked only, it will suppose you want to create new Lots/Serial Numbers, so you can provide them in a text field. "
-msgstr "If this is checked only, it will suppose you want to create new Texere SH IDs, so you can provide them in a text field. "
+msgstr "If this is checked only, it will suppose you want to create new Texere FH IDs, so you can provide them in a text field. "
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock.field_stock_move_line__picking_type_use_existing_lots model:ir.model.fields,help:stock.field_stock_picking_type__use_existing_lots
 msgid "If this is checked, you will be able to choose the Lots/Serial Numbers. You can also decide to not put lots in this operation type.  This means it will create stock with no lot or not put a restriction on the lot taken. "
-msgstr "If this is checked, you will be able to choose the Texere SH IDs. You can also decide to not put lots in this operation type.  This means it will create stock with no Texere SH ID or not put a restriction on the Texere SH ID taken. "
+msgstr "If this is checked, you will be able to choose the Texere FH IDs. You can also decide to not put lots in this operation type.  This means it will create stock with no Texere FH ID or not put a restriction on the Texere FH ID taken. "
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:account_asset.field_account_account__asset_model
@@ -44956,7 +44956,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock.field_stock_production_lot__ref
 msgid "Internal reference number in case it differs from the manufacturer's lot/serial number"
-msgstr "Internal reference number in case it differs from the manufacturer's Texere SH ID"
+msgstr "Internal reference number in case it differs from the manufacturer's Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_barcode model:ir.model.fields,help:stock_barcode.field_stock_scrap__product_barcode
@@ -45435,7 +45435,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,help:mrp.field_mrp_workorder__move_line_ids
 msgid "Inventory moves for which you must scan a lot number at this work order"
-msgstr "Inventory moves for which you must scan a Texere SH ID at this work order"
+msgstr "Inventory moves for which you must scan a Texere FH ID at this work order"
 
 #. module: stock_barcode
 #: model:ir.module.module,summary:base.module_stock_account
@@ -50030,22 +50030,22 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__lot_name model:ir.model.fields.selection,name:stock.selection__barcode_rule__type__lot
 msgid "Lot"
-msgstr "Texere SH ID"
+msgstr "Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock.model_stock_production_lot model:ir.model.fields,field_description:stock.field_stock_scrap__lot_id
 msgid "Lot/Serial"
-msgstr "Texere SH ID"
+msgstr "Texere FH ID"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.report_stock_body_print model_terms:ir.ui.view,arch_db:stock.report_stock_inventory
 msgid "Lot/Serial #"
-msgstr "Texere SH ID"
+msgstr "Texere FH ID"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.message_body
 msgid "Lot/Serial :"
-msgstr "Texere SH ID:"
+msgstr "Texere FH ID:"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__lot_producing_id model:ir.model.fields,field_description:mrp.field_mrp_unbuild__lot_id model:ir.model.fields,field_description:mrp.field_mrp_workorder__finished_lot_id
@@ -50053,69 +50053,69 @@ msgstr "Texere SH ID:"
 #: model:ir.model.fields,field_description:stock.field_stock_quant__lot_id model_terms:ir.ui.view,arch_db:stock.quant_search_view model_terms:ir.ui.view,arch_db:stock.report_delivery_document model_terms:ir.ui.view,arch_db:stock.report_package_barcode
 #: model_terms:ir.ui.view,arch_db:stock.search_product_lot_filter
 msgid "Lot/Serial Number"
-msgstr "Texere SH ID"
+msgstr "Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.actions.report,name:stock.action_report_lot_label
 msgid "Lot/Serial Number (PDF)"
-msgstr "Texere SH ID (PDF)"
+msgstr "Texere FH ID (PDF)"
 
 #. module: stock_barcode
 #: model:ir.actions.report,name:stock.label_lot_template
 msgid "Lot/Serial Number (ZPL)"
-msgstr "Texere SH ID (ZPL)"
+msgstr "Texere FH ID (ZPL)"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "Lot/Serial Number Details"
-msgstr "Texere SH ID Details"
+msgstr "Texere FH ID Details"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.view_inventory_tree
 msgid "Lot/Serial Number Inventory"
-msgstr "Texere SH ID Inventory"
+msgstr "Texere FH ID Inventory"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_stock_move_line__lot_name
 msgid "Lot/Serial Number Name"
-msgstr "Texere SH ID Name"
+msgstr "Texere FH ID Name"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:mrp.field_mrp_unbuild__lot_id
 msgid "Lot/Serial Number of the product to unbuild."
-msgstr "Texere SH ID of the product to unbuild."
+msgstr "Texere FH ID of the product to unbuild."
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.product_form_view_procurement_button model_terms:ir.ui.view,arch_db:stock.product_template_form_view_procurement_button
 msgid "Lot/Serial Numbers"
-msgstr "Texere SH IDs"
+msgstr "Texere FH IDs"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_res_config_settings__group_stock_production_lot
 msgid "Lots & Serial Numbers"
-msgstr "Texere SH IDs"
+msgstr "Texere FH IDs"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
 msgid "Lots &amp; Serial numbers will appear on the delivery slip"
-msgstr "Texere SH IDs will appear on the delivery slip"
+msgstr "Texere FH IDs will appear on the delivery slip"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_stock_move_line__lots_visible
 msgid "Lots Visible"
-msgstr "Texere SH ID Visible"
+msgstr "Texere FH ID Visible"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.view_stock_track_confirmation
 msgid "Lots or serial numbers were not provided to tracked products"
-msgstr "Texere SH ID were not provided to tracked products"
+msgstr "Texere FH ID were not provided to tracked products"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock.action_production_lot_form model:ir.ui.menu,name:mrp.menu_mrp_traceability model:ir.ui.menu,name:stock.menu_action_production_lot_form model_terms:ir.ui.view,arch_db:stock.view_production_lot_form
 #: model_terms:ir.ui.view,arch_db:stock.view_production_lot_tree
 msgid "Lots/Serial Numbers"
-msgstr "Texere SH IDs"
+msgstr "Texere FH IDs"
 
 #. module: stock_barcode
 #: model_terms:ir.actions.act_window,help:stock.action_production_lot_form
@@ -50123,7 +50123,7 @@ msgid ""
 "Lots/Serial numbers help you tracking the path followed by your products.\n"
 "            From their traceability report you will see the full history of their use, as well as their composition."
 msgstr ""
-"Texere SH IDs help you tracking the path followed by your products.\n"
+"Texere FH IDs help you tracking the path followed by your products.\n"
 "            From their traceability report you will see the full history of their use, as well as their composition."
 
 #. module: stock_barcode
@@ -50818,7 +50818,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:res.groups,name:stock.group_production_lot
 msgid "Manage Lots / Serial Numbers"
-msgstr "Manage Texere SH IDs"
+msgstr "Manage Texere FH IDs"
 
 #. module: mail
 #. openerp-web
@@ -55257,7 +55257,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.report_stock_inventory
 msgid "No operation made on this lot."
-msgstr "No operation made on this Texere SH ID."
+msgstr "No operation made on this Texere FH ID."
 
 #. module: account
 #: code:addons/account/models/ir_actions_report.py:0
@@ -64306,7 +64306,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.view_production_lot_form
 msgid "Product this lot/serial number contains. You cannot change it anymore if it has already been moved."
-msgstr "Product this Texere SH ID contains. You cannot change it anymore if it has already been moved."
+msgstr "Product this Texere FH ID contains. You cannot change it anymore if it has already been moved."
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__product_uom_name
@@ -67431,7 +67431,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.view_move_kandan
 msgid "Register lots, packs, location"
-msgstr "Register Texere SH IDs, packs, location"
+msgstr "Register Texere FH IDs, packs, location"
 
 #. module: l10n_be_coda
 #: code:addons/l10n_be_coda/wizard/account_bank_statement_import_coda.py:0
@@ -71015,7 +71015,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/xml/qweb_templates.xml:0
 #, python-format
 msgid "Scan the serial or lot number of the product"
-msgstr "Scan the Texere SH ID of the product"
+msgstr "Scan the Texere FH ID of the product"
 
 #. module: stock_barcode
 #. openerp-web
@@ -72662,12 +72662,12 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_stock_move__lot_ids
 msgid "Serial Numbers"
-msgstr "Texere SH IDs"
+msgstr "Texere FH IDs"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_inventory_line_barcode model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Serial/Lot Number"
-msgstr "Texere SH ID"
+msgstr "Texere FH ID"
 
 #. module: documents_spreadsheet
 #. openerp-web
@@ -72921,7 +72921,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
 msgid "Set expiration dates on lots &amp; serial numbers"
-msgstr "Set expiration dates on Texere SH IDs"
+msgstr "Set expiration dates on Texere FH IDs"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -73477,7 +73477,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__show_final_lots
 msgid "Show Final Lots"
-msgstr "Show Final Texere SH IDs"
+msgstr "Show Final Texere FH IDs"
 
 #. module: mail
 #. openerp-web
@@ -73499,12 +73499,12 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_stock_package_level__show_lots_m2o
 msgid "Show Lots M2O"
-msgstr "Show Texere SH IDs M2O"
+msgstr "Show Texere FH IDs M2O"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_stock_package_level__show_lots_text model:ir.model.fields,field_description:stock.field_stock_picking__show_lots_text
 msgid "Show Lots Text"
-msgstr "Show Texere SH ID Text"
+msgstr "Show Texere FH ID Text"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_stock_picking__show_mark_as_todo
@@ -74498,7 +74498,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.view_stock_track_confirmation
 msgid "Some products of the inventory adjustment are tracked. Are you sure you don't want to specify a serial or lot number for them?"
-msgstr "Some products of the inventory adjustment are tracked. Are you sure you don't want to specify a Texere SH ID for them?"
+msgstr "Some products of the inventory adjustment are tracked. Are you sure you don't want to specify a Texere FH ID for them?"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -75455,7 +75455,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock.model_stock_assign_serial
 msgid "Stock Assign Serial Numbers"
-msgstr "Stock Assign Texere SH IDs"
+msgstr "Stock Assign Texere FH IDs"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:mrp.field_mrp_workorder__production_availability
@@ -75465,12 +75465,12 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot_line__stock_barcode_lot_id
 msgid "Stock Barcode Lot"
-msgstr "Stock Barcode Texere SH ID"
+msgstr "Stock Barcode Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_lot__stock_barcode_lot_line_ids
 msgid "Stock Barcode Lot Line"
-msgstr "Stock Barcode Texere SH ID Line"
+msgstr "Stock Barcode Texere FH ID Line"
 
 #. module: stock_barcode
 #: model:ir.module.module,shortdesc:base.module_stock_barcode_mobile
@@ -78958,7 +78958,7 @@ msgid ""
 "The combination of serial number and product must be unique across a company.\n"
 "Following combination contains duplicates:\n"
 msgstr ""
-"The combination of Texere SH ID and product must be unique across a company.\n"
+"The combination of Texere FH ID and product must be unique across a company.\n"
 "Following combination contains duplicates:\n"
 
 #. module: stock_barcode
@@ -79694,7 +79694,7 @@ msgstr ""
 #: code:addons/stock/wizard/stock_assign_serial_numbers.py:0
 #, python-format
 msgid "The number of Serial Numbers to generate must greater than zero."
-msgstr "The number of Texere SH IDs to generate must greater than zero."
+msgstr "The number of Texere FH IDs to generate must greater than zero."
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:account_followup.field_account_followup_followup_line__delay
@@ -80152,7 +80152,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:0
 #, python-format
 msgid "The scanned lot does not match an existing one."
-msgstr "The scanned Texere SH ID does not match an existing one."
+msgstr "The scanned Texere FH ID does not match an existing one."
 
 #. module: stock_barcode
 #. openerp-web
@@ -80166,7 +80166,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/js/client_action/abstract_client_action.js:0
 #, python-format
 msgid "The scanned serial number is already used."
-msgstr "The scanned Texere SH ID is already used."
+msgstr "The scanned Texere FH ID is already used."
 
 #. module: analytic
 #: code:addons/analytic/models/analytic_account.py:0
@@ -80204,13 +80204,13 @@ msgstr ""
 #: code:addons/mrp/models/mrp_production.py:0
 #, python-format
 msgid "The serial number %(number)s used for byproduct %(product_name)s has already been produced"
-msgstr "The Texere SH ID %(number)s used for byproduct %(product_name)s has already been produced"
+msgstr "The Texere FH ID %(number)s used for byproduct %(product_name)s has already been produced"
 
 #. module: mrp
 #: code:addons/mrp/models/mrp_production.py:0
 #, python-format
 msgid "The serial number %(number)s used for component %(component)s has already been consumed"
-msgstr "The Texere SH ID %(number)s used for component %(component)s has already been consumed"
+msgstr "The Texere FH ID %(number)s used for component %(component)s has already been consumed"
 
 #. module: stock
 #: code:addons/stock/models/stock_quant.py:0
@@ -80219,14 +80219,14 @@ msgid ""
 "The serial number has already been assigned: \n"
 " Product: %s, Serial Number: %s"
 msgstr ""
-"The Texere SH ID has already been assigned: \n"
-" Product: %s, Texere SH ID: %s"
+"The Texere FH ID has already been assigned: \n"
+" Product: %s, Texere FH ID: %s"
 
 #. module: stock
 #: code:addons/stock/models/stock_move.py:0
 #, python-format
 msgid "The serial number must contain at least one digit."
-msgstr "The Texere SH ID must contain at least one digit."
+msgstr "The Texere FH ID must contain at least one digit."
 
 #. module: base
 #: code:addons/base/models/ir_mail_server.py:0
@@ -81219,7 +81219,7 @@ msgstr ""
 #: code:addons/stock/models/stock_move_line.py:0
 #, python-format
 msgid "This lot %(lot_name)s is incompatible with this product %(product_name)s"
-msgstr "This Texere SH ID %(lot_name)s is incompatible with this product %(product_name)s"
+msgstr "This Texere FH ID %(lot_name)s is incompatible with this product %(product_name)s"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:account.field_account_reconcile_model__to_check model:ir.model.fields,help:account.field_account_reconcile_model_template__to_check
@@ -81581,7 +81581,7 @@ msgstr ""
 #: code:addons/mrp/models/mrp_production.py:0 code:addons/mrp/models/mrp_workorder.py:0
 #, python-format
 msgid "This serial number for product %s has already been produced"
-msgstr "This Texere SH ID for product %s has already been produced"
+msgstr "This Texere FH ID for product %s has already been produced"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock.field_product_product__property_stock_production model:ir.model.fields,help:stock.field_product_template__property_stock_production
@@ -82666,13 +82666,13 @@ msgid ""
 "Track following dates on lots & serial numbers: best before, removal, end of life, alert. \n"
 " Such dates are set automatically at lot/serial number creation based on values set on the product (in days)."
 msgstr ""
-"Track following dates on Texere SH ID: best before, removal, end of life, alert. \n"
-" Such dates are set automatically at Texere SH ID creation based on values set on the product (in days)."
+"Track following dates on Texere FH ID: best before, removal, end of life, alert. \n"
+" Such dates are set automatically at Texere FH ID creation based on values set on the product (in days)."
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock.res_config_settings_view_form
 msgid "Track following dates on lots & serial numbers: best before, removal, end of life, alert. Such dates are set automatically at lot/serial number creation based on values set on the product (in days)."
-msgstr "Track following dates on Texere SH IDs: best before, removal, end of life, alert. Such dates are set automatically at Texere SH ID creation based on values set on the product (in days)."
+msgstr "Track following dates on Texere FH IDs: best before, removal, end of life, alert. Such dates are set automatically at Texere FH ID creation based on values set on the product (in days)."
 
 #. module: base_import
 #. openerp-web
@@ -82715,12 +82715,12 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock.selection__stock_track_line__tracking__lot
 msgid "Tracked by lot"
-msgstr "Tracked by Texere SH ID"
+msgstr "Tracked by Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock.selection__stock_track_line__tracking__serial
 msgid "Tracked by serial number"
-msgstr "Tracked by unique Texere SH ID"
+msgstr "Tracked by unique Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:mail.field_mail_mail__tracking_value_ids model:ir.model.fields,help:mail.field_mail_message__tracking_value_ids
@@ -84170,7 +84170,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock.field_stock_production_lot__name
 msgid "Unique Lot/Serial Number"
-msgstr "Unique Texere SH ID"
+msgstr "Unique Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:mrp.field_stock_move__unit_factor
@@ -85028,7 +85028,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock.field_stock_move_line__picking_type_use_existing_lots model:ir.model.fields,field_description:stock.field_stock_picking_type__use_existing_lots
 msgid "Use Existing Lots/Serial Numbers"
-msgstr "Use Existing Texere SH IDs"
+msgstr "Use Existing Texere FH IDs"
 
 #. module: stock_barcode
 #: model:ir.module.module,summary:base.module_pos_iot
@@ -85784,7 +85784,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_barcode_lot_form
 msgid "Validate Lot"
-msgstr "Validate Texere SH ID"
+msgstr "Validate Texere FH ID"
 
 #. module: stock_barcode
 #: model:ir.module.module,summary:base.module_phone_validation
@@ -88918,7 +88918,7 @@ msgstr ""
 #: code:addons/stock/models/stock_production_lot.py:0
 #, python-format
 msgid "You are not allowed to change the product linked to a serial or lot number if some stock moves have already been created with that number. This would lead to inconsistencies in your stock."
-msgstr "You are not allowed to change the product linked to a Texere SH ID if some stock moves have already been created with that number. This would lead to inconsistencies in your stock."
+msgstr "You are not allowed to change the product linked to a Texere FH ID if some stock moves have already been created with that number. This would lead to inconsistencies in your stock."
 
 #. module: base
 #: code:addons/base/models/ir_model.py:0
@@ -88930,13 +88930,13 @@ msgstr ""
 #: code:addons/stock/models/stock_production_lot.py:0
 #, python-format
 msgid "You are not allowed to create a lot or serial number with this operation type. To change this, go on the operation type and tick the box \"Create New Lots/Serial Numbers\"."
-msgstr "You are not allowed to create a Texere SH ID with this operation type. To change this, go on the operation type and tick the box \"Create New Texere SH IDs\"."
+msgstr "You are not allowed to create a Texere FH ID with this operation type. To change this, go on the operation type and tick the box \"Create New Texere FH IDs\"."
 
 #. module: mrp
 #: code:addons/mrp/models/stock_production_lot.py:0
 #, python-format
 msgid "You are not allowed to create or edit a lot or serial number for the components with the operation type \"Manufacturing\". To change this, go on the operation type and tick the box \"Create New Lots/Serial Numbers for Components\"."
-msgstr "You are not allowed to create or edit a Texere SH ID for the components with the operation type \"Manufacturing\". To change this, go on the operation type and tick the box \"Create New Texere SH IDs for Components\"."
+msgstr "You are not allowed to create or edit a Texere FH ID for the components with the operation type \"Manufacturing\". To change this, go on the operation type and tick the box \"Create New Texere FH IDs for Components\"."
 
 #. module: base
 #: code:addons/base/models/ir_model.py:0
@@ -89217,7 +89217,7 @@ msgstr ""
 #: code:addons/stock/models/stock_move_line.py:0
 #, python-format
 msgid "You can only process 1.0 %s of products with unique serial number."
-msgstr "You can only process 1.0 %s of products with unique Texere SH ID."
+msgstr "You can only process 1.0 %s of products with unique Texere FH ID."
 
 #. module: account
 #: code:addons/account/models/account_move.py:0
@@ -89777,7 +89777,7 @@ msgstr ""
 #: code:addons/mrp/models/mrp_workorder.py:0
 #, python-format
 msgid "You cannot produce the same serial number twice."
-msgstr "You cannot produce the same Texere SH ID twice."
+msgstr "You cannot produce the same Texere FH ID twice."
 
 #. module: account
 #: code:addons/account/wizard/pos_box.py:0
@@ -89843,7 +89843,7 @@ msgstr ""
 #: code:addons/stock_barcode/wizard/stock_barcode_lot.py:0
 #, python-format
 msgid "You cannot scan two times the same serial number"
-msgstr "You cannot scan two times the same Texere SH ID"
+msgstr "You cannot scan two times the same Texere FH ID"
 
 #. module: account
 #: code:addons/account/models/account_account.py:0
@@ -89923,7 +89923,7 @@ msgstr ""
 #: code:addons/stock/models/stock_move_line.py:0
 #, python-format
 msgid "You cannot use the same serial number twice. Please correct the serial numbers encoded."
-msgstr "You cannot use the same Texere SH ID twice. Please correct the Texere SH IDs encoded."
+msgstr "You cannot use the same Texere FH ID twice. Please correct the Texere FH IDs encoded."
 
 #. module: account
 #: code:addons/account/models/account_move.py:0
@@ -90101,7 +90101,7 @@ msgstr ""
 #: code:addons/stock/models/product.py:0
 #, python-format
 msgid "You have product(s) in stock that have no lot/serial number. You can assign lot/serial numbers by doing an inventory adjustment."
-msgstr "You have product(s) in stock that have no Texere SH ID. You can assign Texere SH IDs by doing an inventory adjustment."
+msgstr "You have product(s) in stock that have no Texere FH ID. You can assign Texere FH IDs by doing an inventory adjustment."
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
@@ -90256,19 +90256,19 @@ msgstr ""
 #: code:addons/mrp/models/mrp_workorder.py:0
 #, python-format
 msgid "You need to provide a lot for the finished product."
-msgstr "You need to provide a Texere SH ID for the finished product."
+msgstr "You need to provide a Texere FH ID for the finished product."
 
 #. module: stock
 #: code:addons/stock/models/stock_move.py:0
 #, python-format
 msgid "You need to set a Serial Number before generating more."
-msgstr "You need to set a Texere SH ID before generating more."
+msgstr "You need to set a Texere FH ID before generating more."
 
 #. module: mrp
 #: code:addons/mrp/wizard/mrp_immediate_production.py:0
 #, python-format
 msgid "You need to supply Lot/Serial Number for products:"
-msgstr "You need to supply Texere SH ID for products:"
+msgstr "You need to supply Texere FH ID for products:"
 
 #. module: stock
 #: code:addons/stock/models/stock_move_line.py:0
@@ -90277,14 +90277,14 @@ msgid ""
 "You need to supply a Lot/Serial Number for product: \n"
 " - "
 msgstr ""
-"You need to supply a Texere SH ID for product: \n"
+"You need to supply a Texere FH ID for product: \n"
 " - "
 
 #. module: stock
 #: code:addons/stock/models/stock_picking.py:0
 #, python-format
 msgid "You need to supply a Lot/Serial number for products %s."
-msgstr "You need to supply a Texere SH ID for products %s."
+msgstr "You need to supply a Texere FH ID for products %s."
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:mrp.action_mrp_production_backorder
@@ -90326,7 +90326,7 @@ msgstr ""
 #: code:addons/mrp/models/mrp_unbuild.py:0
 #, python-format
 msgid "You should provide a lot number for the final product."
-msgstr "You should provide a Texere SH ID for the final product."
+msgstr "You should provide a Texere FH ID for the final product."
 
 #. module: mrp
 #: code:addons/mrp/models/mrp_bom.py:0

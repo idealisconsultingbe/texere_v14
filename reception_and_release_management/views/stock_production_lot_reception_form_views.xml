@@ -10,20 +10,26 @@
                     <button name="send_form" string="Send Form" context="{'send_form': True}" states="confirmed" type="object" class="oe_highlight" groups="base.group_user"/>
                     <button name="sign_form" string="Release and Sign" states="sent" context="{'form_lot_status': 'released'}" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
                     <button name="sign_form" string="Reject and Sign" states="sent" context="{'form_lot_status': 'rejected'}" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
+                    <button name="close_form" string="Close Form" attrs="{'invisible': ['|', ('state', '!=', 'approved'), ('type', '!=', 'rc_with_qc')]}" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
 <!--                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" groups="base.group_user"/>-->
-                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,sent,validated"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,sent,approved,closed"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
+                        <strong><field name="type"/></strong>
                         <h1>
+                            <label for="name" class="oe_edit_only"/>
                             <field name="name"/>
                         </h1>
+                        <div class="o_row" attrs="{'invisible': [('type', '!=', 'qc_result')]}">
+                            <label for="parent_id" string="Parent"/>
+                            <field name="parent_id"/>
+                        </div>
                     </div>
                     <group>
                         <group string="General Information">
                             <field name="lot_id"/>
-                            <field name="picking_id" string="Transfer"/>
+                            <field name="picking_id" string="Transfer Origin"/>
                             <field name="purchase_id"/>
                             <field name="partner_id" string="Supplier"/>
                             <field name="product_id"/>
@@ -44,7 +50,7 @@
                                 <field name="manual_temperature" attrs="{'invisible': [('storage_temperature', '!=', 'rt')]}"/>
                             </div>
                         </group>
-                        <group string="Reception" col="4">
+                        <group string="Reception" colspan="2" col="4">
                             <field name="arrival_date"/>
                             <field name="expiration_date"/>
                             <label for="product_qty"/>
@@ -63,6 +69,18 @@
                             'invisible': [('form_appendix', '!=', 'not_done'), ('temperature_appendix', '!=', 'not_done'), ('materials_conformity', '!=', 'no')], 'required': ['|', '|', ('form_appendix', '=', 'not_done'), ('temperature_appendix', '=', 'not_done'), ('materials_conformity', '=', 'no')]}"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="QC Results" attrs="{'invisible': [('type', '!=', 'rc_with_qc')]}">
+                            <group>
+                                <field name="child_ids" nolabel="1">
+                                    <tree>
+                                        <!-- TODO: add text decoration ? -->
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
@@ -80,6 +98,7 @@
         <field name="arch" type="xml">
             <tree string="Reception and Release Form" create="0">
                 <field name="name"/>
+                <field name="type"/>
                 <field name="lot_id"/>
                 <field name="lot_status" string="Lot Status"/>
                 <field name="state" string="Form Status"/>
@@ -98,10 +117,16 @@
                 <separator />
                 <filter string="Confirmed" name="filter_rr_confirmed" domain="[('state', '=', 'confirmed')]"/>
                 <filter string="Sent" name="filter_rr_sent" domain="[('state', '=', 'sent')]"/>
-                <filter string="Validated" name="filter_rr_validated" domain="[('state', '=', 'validated')]"/>
+                <filter string="approved" name="filter_rr_approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="closed" name="filter_rr_closed" domain="[('state', '=', 'closed')]"/>
                 <separator />
                 <filter string="Released" name="filter_rr_lot_released" domain="[('lot_status', '=', 'released')]"/>
                 <filter string="Rejected" name="filter_rr_lot_rejected" domain="[('lot_status', '=', 'rejected')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_type" string="By Type" context="{'group_by': 'type'}"/>
+                    <filter name="group_by_state" string="By Form Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_by_lot_status" string="By Lot Status" context="{'group_by': 'lot_status'}"/>
+                </group>
             </search>
         </field>
     </record>
@@ -119,6 +144,6 @@
     </record>
 
     <!-- Menu -->
-    <menuitem id="reception_and_release_form_menu" name="Reception and Release Forms" action="action_reception_form"
+    <menuitem id="reception_and_release_form_list_menu" name="Reception and Release Forms" action="action_reception_form"
         parent="stock.menu_stock_inventory_control" sequence="999"/>
 </odoo>

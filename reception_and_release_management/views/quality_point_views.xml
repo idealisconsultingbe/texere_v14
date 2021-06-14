@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="quality.quality_point_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='user_id']" position="after">
-                <field name="is_form_validation"/>
+                <field name="is_form_validation_required"/>
             </xpath>
         </field>
     </record>

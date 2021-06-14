@@ -8,10 +8,12 @@
                 <form string="Create Reception and Release Form">
                     <separator string="Lots to Process"/>
                     <group>
-                        <group colspan="2">
+                        <group colspan="4" col="1">
+                            <field name="all_lot_ids" invisible="1"/>
                             <field name="available_lot_ids" invisible="1"/>
                             <field name="hide_edition_fields" invisible="1"/>
-                            <field name="lot_ids" options="{'no_create': True}" domain="[('id', 'in', available_lot_ids)]" nolabel="1" widget="many2many_tags"/>
+                            <field name="type" widget="radio" nolabel="1"/>
+                            <field name="lot_ids" options="{'no_create': True}" nolabel="1" widget="many2many_tags"/>
                         </group>
 
                         <group attrs="{'invisible': [('hide_edition_fields', '=', False)]}">

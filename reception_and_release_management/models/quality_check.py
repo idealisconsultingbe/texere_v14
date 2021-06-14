@@ -44,18 +44,18 @@ class QualityCheck(models.Model):
 
     def do_pass(self):
         self.check_form_to_process()
-        if self.point_id.is_form_validation:
+        if self.point_id.is_form_validation_required:
             self.check_form_validation()
         return super(QualityCheck, self).do_pass()
 
     def do_fail(self):
         self.check_form_to_process()
-        if self.point_id.is_form_validation:
+        if self.point_id.is_form_validation_required:
             self.check_form_validation()
         return super(QualityCheck, self).do_fail()
 
     def do_measure(self):
         self.check_form_to_process()
-        if self.point_id.is_form_validation:
+        if self.point_id.is_form_validation_required:
             self.check_form_validation()
         return super(QualityCheck, self).do_measure()

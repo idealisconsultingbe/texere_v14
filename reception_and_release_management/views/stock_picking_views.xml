@@ -5,6 +5,13 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+                <div class="alert alert-warning" role="alert" style="margin-bottom:0px;"
+                     attrs="{'invisible': [('count_lots_to_process', '=', 0)]}">
+                    <field name="count_lots_message"/>
+                    <button name="open_create_reception_form" string="Create RR Forms" type="object" class="oe_link oe_inline" groups="base.group_user"/>
+                </div>
+            </xpath>
             <xpath expr="//header/button[@name='action_confirm']" position="before">
                 <field name="count_lots_to_process" invisible="1"/>
                 <field name="count_lots_to_validate" invisible="1"/>
@@ -26,6 +33,19 @@
                     </div>
                 </button>
             </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_internal_search" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search.inherited.reception.forms</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <filter name="late" position="before">
+                <filter name="count_lots_to_process" string="R&amp;R Creation Required" domain="[('count_lots_to_process', '&gt;', 0), ('state', '=', 'done'), ('picking_type_code', '=', 'incoming')]"/>
+                <filter name="count_lots_to_validate" string="R&amp;R Validation Required" domain="[('count_lots_to_validate', '&gt;', 0), ('state', 'not in', ['done', 'cancel']), ('check_ids', '!=', False)]" groups="quality.group_quality_user"/>
+                <separator/>
+            </filter>
         </field>
     </record>
 </odoo>
