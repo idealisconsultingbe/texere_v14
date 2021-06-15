@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <record id="create_reception_form_view_form" model="ir.ui.view">
-            <field name="name">create.reception.form.view.form</field>
-            <field name="model">create.reception.form</field>
-            <field name="arch" type="xml">
-                <form string="Create Reception and Release Form">
-                    <separator string="Lots to Process"/>
-                    <group>
-                        <group colspan="4" col="1">
-                            <field name="all_lot_ids" invisible="1"/>
-                            <field name="available_lot_ids" invisible="1"/>
-                            <field name="hide_edition_fields" invisible="1"/>
-                            <field name="type" widget="radio" nolabel="1"/>
-                            <field name="lot_ids" options="{'no_create': True}" nolabel="1" widget="many2many_tags"/>
-                        </group>
+    <record id="create_reception_form_view_form" model="ir.ui.view">
+        <field name="name">create.reception.form.view.form</field>
+        <field name="model">create.reception.form</field>
+        <field name="arch" type="xml">
+            <form string="Create Reception and Release Form">
+                <separator string="Lots to Process"/>
+                <group>
+                    <group colspan="4" col="1">
+                        <field name="all_lot_ids" invisible="1"/>
+                        <field name="available_lot_ids" invisible="1"/>
+                        <field name="hide_edition_fields" invisible="1"/>
+                        <field name="type" widget="radio" nolabel="1"/>
+                        <field name="lot_ids" options="{'no_create': True}" nolabel="1" widget="many2many_tags"/>
+                    </group>
 
-                        <group attrs="{'invisible': [('hide_edition_fields', '=', False)]}">
-                            <field name="reception_form_ids" options="{'no_create': True}" attrs="{'required': [('hide_edition_fields', '=', True)]}" domain="[('lot_id', 'in', lot_ids)]" widget="many2many_tags"/>
-                            <field name="lot_status" attrs="{'required': [('hide_edition_fields', '=', True)]}"/>
-                        </group>
+                    <group attrs="{'invisible': [('hide_edition_fields', '=', False)]}">
+                        <field name="reception_form_ids" options="{'no_create': True}" attrs="{'required': [('hide_edition_fields', '=', True)]}" domain="[('lot_id', 'in', lot_ids)]" widget="many2many_tags"/>
+                        <field name="lot_status" attrs="{'required': [('hide_edition_fields', '=', True)]}"/>
+                    </group>
 
-                        <group string="Reception" attrs="{'invisible': [('hide_edition_fields', '=', True)]}">
-                            <field name="packaging_state" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
-                            <field name="form_appendix" string="CoA Appendix" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
-                            <field name="temperature_appendix" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
-                            <field name="supplier_consistency" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
-                            <field name="items_consistency" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
-                            <field name="materials_conformity" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
-                            <field name="reception_comment" attrs="{'invisible': [('packaging_state', '!=', 'damaged'), ('supplier_consistency', '!=', 'different'), ('items_consistency', '!=', 'different'), ('form_appendix', '!=', 'not_done'), ('temperature_appendix', '!=', 'not_done'), ('materials_conformity', '!=', 'no')],
-                            'required': ['|', '|', '|', '|', '|', ('form_appendix', '=', 'not_done'), ('temperature_appendix', '=', 'not_done'), ('materials_conformity', '=', 'no'), ('packaging_state', '=', 'damaged'), ('supplier_consistency', '=', 'different'), ('items_consistency', '=', 'different')]}"/>
-                        </group>
+                    <group string="Reception" attrs="{'invisible': [('hide_edition_fields', '=', True)]}">
+                        <field name="packaging_state" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
+                        <field name="form_appendix" string="CoA Appendix" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
+                        <field name="temperature_appendix" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
+                        <field name="supplier_consistency" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
+                        <field name="items_consistency" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
+                        <field name="materials_conformity" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>
+                        <field name="reception_comment" attrs="{'invisible': [('packaging_state', '!=', 'damaged'), ('supplier_consistency', '!=', 'different'), ('items_consistency', '!=', 'different'), ('form_appendix', '!=', 'not_done'), ('temperature_appendix', '!=', 'not_done'), ('materials_conformity', '!=', 'no')],
+                        'required': ['|', '|', '|', '|', '|', ('form_appendix', '=', 'not_done'), ('temperature_appendix', '=', 'not_done'), ('materials_conformity', '=', 'no'), ('packaging_state', '=', 'damaged'), ('supplier_consistency', '=', 'different'), ('items_consistency', '=', 'different')]}"/>
+                    </group>
 <!--                        <group string="Status" attrs="{'invisible': [('hide_edition_fields', '=', True)]}">-->
 <!--                            <field name="lot_status" attrs="{'required': [('hide_edition_fields', '=', False)]}"/>-->
 <!--                            <label for="items_stored"/>-->
@@ -40,24 +39,23 @@
 <!--                                <field name="storage_location" attrs="{'invisible': [('items_stored', '=', False)], 'required': [('items_stored', '=', True)]}"/>-->
 <!--                            </div>-->
 <!--                        </group>-->
-                    </group>
-                    <footer>
-                        <button name="create_reception_forms" string="Confirm and Send" context="{'send_form': True}" attrs="{'invisible': [('hide_edition_fields', '=', True)]}" colspan="1" type="object" class="btn-primary"/>
-                        <button name="create_reception_forms" string="Confirm" attrs="{'invisible': [('hide_edition_fields', '=', True)]}" colspan="1" type="object" class="btn-secondary"/>
-                        <button name="validate_reception_forms" string="Validate" attrs="{'invisible': [('hide_edition_fields', '=', False)]}" colspan="1" type="object" class="btn-primary"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
+                </group>
+                <footer>
+                    <button name="create_reception_forms" string="Confirm and Send" context="{'send_form': True}" attrs="{'invisible': [('hide_edition_fields', '=', True)]}" colspan="1" type="object" class="btn-primary"/>
+                    <button name="create_reception_forms" string="Confirm" attrs="{'invisible': [('hide_edition_fields', '=', True)]}" colspan="1" type="object" class="btn-secondary"/>
+                    <button name="validate_reception_forms" string="Validate" attrs="{'invisible': [('hide_edition_fields', '=', False)]}" colspan="1" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
 
-        <record id="action_create_reception_form" model="ir.actions.act_window">
-            <field name="name">Create Reception and Release Form</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">create.reception.form</field>
-            <field name="view_mode">form</field>
-            <field name="context">{}</field>
-            <field name="target">new</field>
-        </record>
-    </data>
+    <record id="action_create_reception_form" model="ir.actions.act_window">
+        <field name="name">Create Reception and Release Form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">create.reception.form</field>
+        <field name="view_mode">form</field>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+    </record>
 </odoo>

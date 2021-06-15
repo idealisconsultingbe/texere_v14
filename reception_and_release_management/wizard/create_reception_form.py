@@ -95,7 +95,7 @@ class CreateReceptionForm(models.TransientModel):
             # chatter notification
             body = _('{} {} been created:\n').format(len(forms), _("form has") if len(forms) <= 1 else _("forms have"))
             for form in forms:
-                form_url = f'<a href=# data-oe-model=stock.production.lot.reception.form data-oe-id={form.id}>{form.name}</a>\n'
+                form_url = f'<a href=# data-oe-model={form._name} data-oe-id={form.id}>{form.name}</a>\n'
                 body = body + form_url
             self.picking_id.message_post(body=body)
 

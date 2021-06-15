@@ -4,3 +4,4 @@ user_access_stock_product_lot_reception_form,User access reception and release f
 all_access_form_action,All access reception and release form action,reception_and_release_management.model_reception_form_action,quality.group_quality_user,1,1,1,1
 all_access_stock_product_lot_reception_form,All access reception and release form,reception_and_release_management.model_stock_production_lot_reception_form,quality.group_quality_user,1,1,1,1
 all_access_create_reception_form,All access create reception and release form,reception_and_release_management.model_create_reception_form,base.group_user,1,1,1,1
+all_access_reception_form_custom_warning,All access reception form custom warning,reception_and_release_management.model_reception_form_custom_warning,base.group_user,1,1,1,1

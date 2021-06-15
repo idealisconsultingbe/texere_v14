@@ -69,8 +69,30 @@ class Picking(models.Model):
                                                              ('form_state', '=', form.state),
                                                              ('picking_type_id', '=', picking.picking_type_id.id),
                                                              ('company_id', '=', form.company_id.id)]):
-                    raise UserError(_('Operation type {} is locked for {} in {} state (picking: {}, lot: {}, form: {}). \n\nYou should either cancel this move line or ask your QA to change {} form status.')
-                                    .format(picking.picking_type_id.display_name, form.type, form.state, picking.name, form.lot_id.name, form.name, form.name))
+                    form_url = f'<a href=# data-oe-model={form._name} data-oe-id={form.id}>{form.name}</a>'
+                    picking.activity_schedule(act_type_xmlid='mail.mail_activity_data_warning',
+                                              date_deadline=fields.Date.today(),
+                                              summary=_('Picking Validation Locked'),
+                                              note=_('Picking validation has been blocked because of a Release and Reception Form in {} state (see {}).').format(form.state, form_url),
+                                              user_id=self.env.uid)
+
+                    # retrieve value of selection field 'type'
+                    type = dict(form._fields['type'].selection).get(form.type)
+                    warning = self.env['reception.form.custom.warning'].create({
+                        'title': 'Picking Validation Locked',
+                        'description': _('Operation type {} is locked for {} in {} state (picking: {}, lot: {}, form: {}). \n\nYou should either cancel this move line or ask your QA to change {} form status.')
+                            .format(picking.picking_type_id.display_name, type, form.state, picking.name, form.lot_id.name, form.name, form.name)
+                    })
+                    # TODO: refactoring script code in wizard
+                    return {
+                        'name': 'Picking Validation Locked',
+                        'type': 'ir.actions.act_window',
+                        'view_mode': 'form',
+                        'res_model': 'reception.form.custom.warning',
+                        'res_id': warning.id,
+                        'target': 'new'
+                    }
+
         return super().button_validate()
 
 
