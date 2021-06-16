@@ -28,21 +28,21 @@ class CreateReceptionForm(models.TransientModel):
 
     # Reception fields
     packaging_state = fields.Selection([('good', 'Good state'), ('damaged', 'Damaged*')], string='Packaging State')
-    form_appendix = fields.Selection([('done', 'Done'), ('not_done', 'Not done*'), ('NA', 'Not applicable')], string='Form Appendix', help='Attach reception and release form as Appendix 1')
-    temperature_appendix = fields.Selection([('done', 'Done'), ('not_done', 'Not done*'), ('NA', 'Not applicable')], string='Temperature Appendix', help='Attach shipping temperatures chart as Appendix 2 if temperature-sensitive material')
-    materials_conformity = fields.Selection([('yes', 'Yes'), ('no', 'No*'), ('NA', 'Not applicable')], string='Materials Conformity', help='Received materials conform to the specification criteria')
-    supplier_consistency = fields.Selection([('consistent', 'Consistent'), ('different', 'Different*')], string='Supplier Consistency', help='Consistency between the delivery note and order to the supplier')
-    items_consistency = fields.Selection([('consistent', 'Consistent'), ('different', 'Different*')], string='Items Consistency', help='Consistency of the delivery note with the delivered items')
+    form_appendix = fields.Selection([('yes', 'Yes'), ('no', 'No'), ('NA', 'Not applicable')], string='CoA Appendix', help='Attach certificate of analysis as Appendix 1')
+    temperature_appendix = fields.Selection([('yes', 'Yes'), ('no', 'No'), ('NA', 'Not applicable')], string='Temperature Appendix', help='Attach shipping temperatures chart as Appendix 2 if temperature-sensitive material')
+    materials_conformity = fields.Selection([('criteria_met', 'Criteria met'), ('criteria_not_met', 'Criteria not met*'), ('NA', 'Not applicable')], string='Materials Conformity', help='Received materials conform to the specification criteria')
+    ordered_consistency = fields.Selection([('consistent', 'Consistent'), ('not_consistent', 'Not consistent*')], string='Ordered Consistency', help='Consistency between the delivery note and order to the supplier')
+    received_consistency = fields.Selection([('consistent', 'Consistent'), ('not_consistent', 'Not consistent*')], string='Delivered Consistency', help='Consistency of the delivery note with the delivered items')
     reception_comment = fields.Text(string='Explanations', help='Reasons why received materials are not conform and/or appendixes are not done')
 
     # Status fields
     lot_status = fields.Selection([('released', 'Released for use'), ('rejected', 'Rejected')], string='Status')
-    # items_stored = fields.Boolean(string='Items Stored', help='If checked, items should be stored')
-    # storage_location = fields.Char(string='Storage Location')
+    items_stored = fields.Boolean(string='Items Stored', help='If checked, items should be stored')
+    storage_location = fields.Char(string='Storage Location')
 
-    @api.onchange('form_appendix', 'temperature_appendix', 'materials_conformity')
+    @api.onchange('ordered_consistency', 'received_consistency', 'materials_conformity')
     def _onchange_reception_comment(self):
-        if self.form_appendix != 'not_done' and self.temperature_appendix != 'not_done' and self.materials_conformity != 'no':
+        if self.materials_conformity != 'criteria_not_met' and self.received_consistency != 'not_consistent' and self.ordered_consistency != 'not_consistent':
             self.reception_comment = ''
 
     @api.onchange('type')
@@ -54,10 +54,10 @@ class CreateReceptionForm(models.TransientModel):
             self.lot_ids = False
             self.available_lot_ids = self.all_lot_ids.filtered(lambda lot: lot.product_critical_level == 'critical')
 
-    # @api.onchange('items_stored')
-    # def _onchange_storage_location(self):
-    #     if not self.items_stored:
-    #         self.storage_location = ''
+    @api.onchange('items_stored')
+    def _onchange_storage_location(self):
+        if not self.items_stored:
+            self.storage_location = ''
 
     def validate_reception_forms(self):
         self.ensure_one()
@@ -74,18 +74,18 @@ class CreateReceptionForm(models.TransientModel):
                 'picking_id': self.picking_id.id,
                 'lot_id': lot.id,
                 'arrival_date': self.picking_id.date_done.date(),
+                # Information comes from product but can be changed on RR form
                 'specification_reference': lot.product_id.specification_ref,
                 'storage_temperature': lot.product_id.storage_temperature,
-                'manual_temperature': lot.product_id.manual_temperature,
                 'lot_status': self.lot_status,
-                # 'items_stored': self.items_stored,
-                # 'storage_location': self.storage_location,
+                'items_stored': self.items_stored,
+                'storage_location': self.storage_location,
                 'packaging_state': self.packaging_state,
                 'form_appendix': self.form_appendix,
                 'temperature_appendix': self.temperature_appendix,
                 'materials_conformity': self.materials_conformity,
-                'supplier_consistency': self.supplier_consistency,
-                'items_consistency': self.items_consistency,
+                'ordered_consistency': self.ordered_consistency,
+                'received_consistency': self.received_consistency,
                 'reception_comment': self.reception_comment,
                 'expiration_date': lot.expiration_date or False,
                 'product_qty': lot.product_qty,

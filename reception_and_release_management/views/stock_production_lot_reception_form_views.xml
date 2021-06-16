@@ -10,7 +10,7 @@
                     <button name="send_form" string="Send Form" context="{'send_form': True}" states="confirmed" type="object" class="oe_highlight" groups="base.group_user"/>
                     <button name="sign_form" string="Release and Sign" states="sent" context="{'form_lot_status': 'released'}" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
                     <button name="sign_form" string="Reject and Sign" states="sent" context="{'form_lot_status': 'rejected'}" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
-                    <button name="close_form" string="Close Form" attrs="{'invisible': ['|', ('state', '!=', 'approved'), ('type', '!=', 'rc_with_qc')]}" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
+                    <button name="%(action_close_reception_form)d" string="Close Form" attrs="{'invisible': ['|', ('state', '!=', 'approved'), ('type', '!=', 'rc_with_qc')]}" type="action" class="oe_highlight" groups="quality.group_quality_user"/>
 <!--                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" groups="base.group_user"/>-->
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,sent,approved,closed"/>
                 </header>
@@ -35,19 +35,14 @@
                             <field name="product_id"/>
                             <field name="product_categ_id"/>
                         </group>
-                        <group string="Status">
+                        <group string="Status and Identification">
                             <field name="lot_status"/>
-<!--                            <label for="items_stored"/>-->
-<!--                            <div class="o_row">-->
-<!--                                <field name="items_stored"/>-->
-<!--                                <span attrs="{'invisible': [('items_stored', '=', False)]}"> Storage Location:</span>-->
-<!--                                <field name="storage_location" attrs="{'invisible': [('items_stored', '=', False)], 'required': [('items_stored', '=', True)]}"/>-->
-<!--                            </div>-->
-                            <label for="storage_temperature" attrs="{'invisible': [('storage_temperature', '=', False)]}"/>
-                            <div class="o_row" attrs="{'invisible': [('storage_temperature', '=', False)]}">
-                                <field name="storage_temperature"/>
-                                <span attrs="{'invisible': [('storage_temperature', '!=', 'rt')]}">Value</span>
-                                <field name="manual_temperature" attrs="{'invisible': [('storage_temperature', '!=', 'rt')]}"/>
+                            <field name="storage_temperature"/>
+                            <label for="items_stored"/>
+                            <div class="o_row">
+                                <field name="items_stored"/>
+                                <span attrs="{'invisible': [('items_stored', '=', False)]}"> Storage Location:</span>
+                                <field name="storage_location" attrs="{'invisible': [('items_stored', '=', False)], 'required': [('items_stored', '=', True)]}"/>
                             </div>
                         </group>
                         <group string="Reception" colspan="2" col="4">
@@ -60,16 +55,25 @@
                             </div>
                             <field name="packaging_state"/>
                             <field name="specification_reference"/>
-                            <field name="supplier_consistency"/>
-                            <field name="items_consistency"/>
+                            <field name="ordered_consistency"/>
+                            <field name="received_consistency"/>
                             <field name="form_appendix" string="CoA Appendix"/>
                             <field name="temperature_appendix"/>
                             <field name="materials_conformity"/>
                             <field name="reception_comment" colspan="4" attrs="{
-                            'invisible': [('form_appendix', '!=', 'not_done'), ('temperature_appendix', '!=', 'not_done'), ('materials_conformity', '!=', 'no')], 'required': ['|', '|', ('form_appendix', '=', 'not_done'), ('temperature_appendix', '=', 'not_done'), ('materials_conformity', '=', 'no')]}"/>
+                            'invisible': [('received_consistency', '!=', 'not_consistent'), ('ordered_consistency', '!=', 'not_consistent'), ('materials_conformity', '!=', 'criteria_not_met')], 'required': ['|', '|', ('received_consistency', '=', 'not_consistent'), ('ordered_consistency', '=', 'not_consistent'), ('materials_conformity', '=', 'criteria_not_met')]}"/>
                         </group>
                     </group>
                     <notebook>
+                        <page string="Parent Information" attrs="{'invisible': [('type', '!=', 'rc_with_qc')]}">
+                            <group string="Reconciliation">
+                                <group colspan="2" col="4">
+                                    <field name="total_qty_tested"/>
+                                    <field name="reconciliation_consistency"/>
+                                    <field name="reconciliation_comment" colspan="4" attrs="{'invisible': [('reconciliation_consistency', '!=', 'not_consistent')], 'required': [('reconciliation_consistency', '=', 'not_consistent')]}"/>
+                                </group>
+                            </group>
+                        </page>
                         <page string="QC Results" attrs="{'invisible': [('type', '!=', 'rc_with_qc')]}">
                             <group>
                                 <field name="child_ids" nolabel="1">

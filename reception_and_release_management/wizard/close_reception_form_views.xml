@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="close_reception_form_view_form" model="ir.ui.view">
+        <field name="name">close.reception.form.view.form</field>
+        <field name="model">close.reception.form</field>
+        <field name="arch" type="xml">
+            <form string="Close Reception and Release Form">
+                <div class="oe_title">
+                    <h2>
+                        <div class="o_row">
+                            <span>Closure of Form: </span><field name="form_id" options="{'no_open': True}"/>
+                        </div>
+                    </h2>
+                </div>
+                <div class="alert alert-info" role="alert" style="margin-bottom:0px;">
+                    <span>Please verify that form quantity is consistent with tested quantities, leave a comment otherwise.</span>
+                </div>
+                <group>
+                    <field name="product_qty" string="Form Quantity"/>
+                    <field name="total_qty_tested"/>
+                    <field name="reconciliation_consistency" class="oe_inline"/>
+                    <field name="reconciliation_comment" attrs="{'invisible': [('reconciliation_consistency', '!=', 'not_consistent')], 'required': [('reconciliation_consistency', '=', 'not_consistent')]}"/>
+                </group>
+                <footer>
+                    <button name="close_reception_form" string="Close Form" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_close_reception_form" model="ir.actions.act_window">
+        <field name="name">Close Reception and Release Form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">close.reception.form</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'default_form_id': active_id}</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

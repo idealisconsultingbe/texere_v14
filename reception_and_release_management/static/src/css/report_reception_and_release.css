@@ -37,8 +37,14 @@
 .v-align-middle {
     vertical-align: middle;
 }
+.p-05 {
+    padding: 0.5rem;
+}
 .pl-05 {
     padding-left: 0.5rem;
+}
+.pb-05 {
+    padding-bottom: 0.5rem;
 }
 .p-0 {
     padding: 0;
@@ -64,10 +70,13 @@ ul.no-marker-style {
 ul.inline-style li {
   display: inline;
 }
-.coa-table {
+table.coa-table {
     width: 100%;
     border-collapse: collapse;
     border: 1px solid Gray;
+}
+table.coa-table td, table.coa-table th{
+    vertical-align: middle;
 }
 table.th-gray th {
     background-color: LightGray;
@@ -78,8 +87,8 @@ table.th-whitesmoke th {
 table.pl-05 th, table.pl-05 td {
     padding-left: 0.5rem;
 }
-table.p-1-05 th, table.p-1-05 td {
-    padding: 0 0.5rem 1rem 0.5rem;
+table.p-05 th, table.p-05 td {
+    padding: 0.5rem;
 }
 table.bbr-gray th, table.bbr-gray td {
     border-right: 1px solid Gray;

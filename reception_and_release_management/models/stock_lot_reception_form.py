@@ -19,26 +19,33 @@ class LotReceptionForm(models.Model):
 
     product_id = fields.Many2one('product.product', string='Product', related='lot_id.product_id', store=True)
     purchase_id = fields.Many2one('purchase.order', string='Order', related='picking_id.purchase_id', store=True)
-    partner_id = fields.Many2one('res.partner', string='Vendor', related='purchase_id.partner_id', store=True)
+    partner_id = fields.Many2one('res.partner', string='Supplier', related='purchase_id.partner_id', store=True)
     product_uom_id = fields.Many2one('uom.uom', string='Product UoM', related='lot_id.product_uom_id', store=True)
     product_categ_id = fields.Many2one('product.category', string='Product Category', related='lot_id.product_id.categ_id', store=True)
-    seller_product_code = fields.Char(string='Seller Product Code', compute='_compute_seller_product_code', store=True)
+    seller_product_code = fields.Char(string='Supplier Product Code', compute='_compute_seller_product_code', store=True)
     state = fields.Selection(selection=[('draft', 'Draft'), ('confirmed', 'Confirmed'), ('sent', 'Sent'), ('approved', 'Approved'), ('closed', 'Closed')], tracking=True, index=True, readonly=True, string='Status', default='draft')
     type = fields.Selection(selection=[('rc_without_qc', 'RC Without QC'), ('rc_with_qc', 'RC With QC'), ('qc_result', 'QC Results')], default='rc_without_qc', tracking=True, index=True, readonly=True, string='Type')
 
     # RR parent
     child_ids = fields.One2many('stock.production.lot.reception.form', 'parent_id', string='R&R Children', tracking=True, readonly=True)
+    closed_by = fields.Many2one('res.users', string='Closed By', readonly=True, help='Name of the person that closed the parent R&R form')
+    closed_on = fields.Datetime(string='Closed On', readonly=True, help='Closure Date')
+    total_qty_tested = fields.Float(string='Total Quantities Tested', states={'closed': [('readonly', True)]})
+    reconciliation_consistency = fields.Selection([('consistent', 'Consistent'), ('not_consistent', 'Not consistent')], string='Reconciliation Consistency', help='Consistency of the tested quantities according to form quantities', states={'closed': [('readonly', True)]})
+    reconciliation_comment = fields.Text(string='Reconciliation Comment', help='Reasons why tested quantities are not consistent with quantities set on R&R form', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
+
     # RR child
     parent_id = fields.Many2one('stock.production.lot.reception.form', string='R&R Parent', tracking=True, readonly=True)
 
     # Reception fields
     packaging_state = fields.Selection([('good', 'Good state'), ('damaged', 'Damaged')], string='Packaging State', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
-    form_appendix = fields.Selection([('done', 'Done'), ('not_done', 'Not done*'), ('NA', 'Not applicable')], string='Form Appendix', help='Attach reception and release form as Appendix 1', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
-    temperature_appendix = fields.Selection([('done', 'Done'), ('not_done', 'Not done*'), ('NA', 'Not applicable')], string='Temperature Appendix', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
-    materials_conformity = fields.Selection([('yes', 'Yes'), ('no', 'No*'), ('NA', 'Not applicable')], string='Materials Conformity', help='Received materials conform to the specification criteria', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
-    supplier_consistency = fields.Selection([('consistent', 'Consistent'), ('different', 'Different'), ('NA', 'Not applicable')], string='Supplier Consistency', help='Consistency between the delivery note and order to the supplier', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
-    items_consistency = fields.Selection([('consistent', 'Consistent'), ('different', 'Different'), ('NA', 'Not applicable')], string='Items Consistency', help='Consistency of the delivery note with the delivered items', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
-    reception_comment = fields.Text(string='Explanations', help='Reasons why received materials are not conform and/or appendixes are not done', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
+    form_appendix = fields.Selection([('yes', 'Yes'), ('no', 'No'), ('NA', 'Not applicable')], string='CoA Appendix', help='Attach certificate of analysis as Appendix 1', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
+    temperature_appendix = fields.Selection([('yes', 'Yes'), ('no', 'No'), ('NA', 'Not applicable')], string='Temperature Appendix', help='Attach shipping temperatures chart as Appendix 2 if temperature-sensitive material', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
+
+    materials_conformity = fields.Selection([('criteria_met', 'Criteria met'), ('criteria_not_met', 'Criteria not met'), ('NA', 'Not applicable')], string='Materials Conformity', help='Received materials conform to the specification criteria', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
+    ordered_consistency = fields.Selection([('consistent', 'Consistent'), ('not_consitent', 'Not consistent')], string='Ordered Consistency', help='Consistency between the delivery note and order to the supplier', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
+    received_consistency = fields.Selection([('consistent', 'Consistent'), ('not_consistent', 'Not consistent')], string='Delivered Consistency', help='Consistency of the delivery note with the delivered items', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
+    reception_comment = fields.Text(string='Explanations', help='Reasons why received materials are not conform and/or critera are not met', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
 
     arrival_date = fields.Date(string='Arrival Date', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
     specification_reference = fields.Char(string='Reference', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
@@ -49,23 +56,15 @@ class LotReceptionForm(models.Model):
     lot_status = fields.Selection([('released', 'Released for use'), ('rejected', 'Rejected')], string='Lot Status', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
     items_stored = fields.Boolean(string='Items Stored', help='If checked, items should be stored', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
     storage_location = fields.Char(string='Storage Location', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
-    storage_temperature = fields.Selection([('rt', 'RT'), ('2_8', '2-8°C'), ('80', '-80°C')], string='Storage Temperature', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
-    manual_temperature = fields.Char(string='Manual Temperature', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
+    storage_temperature = fields.Selection([('rt', '+15/+25°C (RT)'), ('2_8', '+2/+8°C'), ('80', '-80°C')], string='Storage Temperature', states={'approved': [('readonly', True)], 'closed': [('readonly', True)]})
 
     # reception signature
-    receipt_signature = fields.Binary(string='Receipt Signature', readonly=True, help='Signature made by reception team', copy=False)
-    receipt_signed_by = fields.Many2one('res.users', string='Receipt Signed By', readonly=True, help='Name of the person that received the lot', copy=False)
-    receipt_signed_on = fields.Datetime(string='Receipt Signed On', readonly=True, help='Date of the signature', copy=False)
+    receipt_signed_by = fields.Many2one('res.users', string='Receipt Signed By', readonly=True, help='Name of the person that received the lot')
+    receipt_signed_on = fields.Datetime(string='Receipt Signed On', readonly=True, help='Date of the signature')
 
     # status signature
-    signature = fields.Binary(string='Signature', readonly=True, help='Signature made by quality team', copy=False)
-    signed_by = fields.Many2one('res.users', string='Signed By', readonly=True, help='Name of the person that signed the R&R form', copy=False)
-    signed_on = fields.Datetime(string='Signed On', readonly=True, help='Date of the signature', copy=False)
-    job_title = fields.Char(string='Job Position', related='signed_by.job_title', store=True, copy=False)
-
-    # closure
-    closed_by = fields.Many2one('res.users', string='Closed By', readonly=True, help='Name of the person that closed the R&R form', copy=False)
-    closed_on = fields.Datetime(string='Closed On', readonly=True, help='Date of closure', copy=False)
+    signed_by = fields.Many2one('res.users', string='Signed By', readonly=True, help='Name of the person that signed the R&R form')
+    signed_on = fields.Datetime(string='Signed On', readonly=True, help='Signature Date')
 
     @api.depends('product_id.seller_ids.name', 'product_id.seller_ids.product_code')
     def _compute_seller_product_code(self):
@@ -76,25 +75,15 @@ class LotReceptionForm(models.Model):
                     lambda supplierinfo: supplierinfo.name == form.partner_id and supplierinfo.product_code)
                 form.seller_product_code = supplierinfo[0].product_code if supplierinfo else ''
 
-    @api.onchange('form_appendix', 'temperature_appendix', 'materials_conformity')
+    @api.onchange('ordered_consistency', 'received_consistency', 'materials_conformity')
     def _onchange_reception_comment(self):
-        if self.form_appendix != 'not_done' and self.temperature_appendix != 'not_done' and self.materials_conformity != 'no':
+        if self.materials_conformity != 'criteria_not_met' and self.received_consistency != 'not_consistent' and self.ordered_consistency != 'not_consistent':
             self.reception_comment = ''
 
     @api.onchange('items_stored')
-    def _onchange_storage_location(self):
+    def _onchange_items_stored(self):
         if not self.items_stored:
             self.storage_location = ''
-
-    @api.onchange('items_stored')
-    def _onchange_storage_temperature(self):
-        if not self.items_stored:
-            self.storage_temperature = False
-
-    @api.onchange('storage_temperature')
-    def _onchange_manual_temperature(self):
-        if self.storage_temperature != 'rt':
-            self.manual_temperature = ''
 
     @api.constrains('state', 'type')
     def _check_state(self):
@@ -138,21 +127,11 @@ class LotReceptionForm(models.Model):
         self.ensure_one()
         self.write({'state': 'confirmed'})
 
-    def close_form(self):
-        self.ensure_one()
-        self.write({
-            'state': 'closed',
-            'closed_by': self.env.user.id,
-            'closed_on': fields.Datetime.now(),
-        })
-        self._post_message(_('Form closed by {} on {}').format(self.closed_by.name, self.closed_on))
-
     def sign_form(self):
         self.ensure_one()
         self.write({
             'signed_by': self.env.user.id,
             'signed_on': fields.Datetime.now(),
-            'signature': self.env.user.sign_signature,
             'lot_status': self.env.context.get('form_lot_status', 'released'),
             'state': 'approved',
         })
@@ -174,7 +153,6 @@ class LotReceptionForm(models.Model):
         self.write({
             'receipt_signed_by': self.env.user.id,
             'receipt_signed_on': fields.Datetime.now(),
-            'receipt_signature': self.env.user.sign_signature,
             'state': 'sent' if self.env.context.get('send_form') else 'confirmed'
         })
 

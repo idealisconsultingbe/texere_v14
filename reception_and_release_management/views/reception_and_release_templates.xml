@@ -30,15 +30,15 @@
                                 <img src="/reception_and_release_management/static/src/img/texere_logo.jpg" style="max-height: 2.5rem;" alt="Texere Logo"/>
                             </td>
                             <td rowspan="3" class="v-align-middle prl-1" width="50%">
-                                <h1 class="text-center fs-15-rem">Reagents and Consumables reception and release form</h1>
+                                <h1 class="text-center fs-15-rem"><t t-raw="document_title"/></h1>
                             </td>
-                            <td class="pl-05" width="25%">OP.1.2_FOR_005/03</td>
+                            <td class="pl-05" width="25%">OP.1.2_FOR_005/04</td>
                         </tr>
                         <tr>
-                            <td class="pl-05">Effective date: 02MAY19</td>
+                            <td class="pl-05">Effective date:</td>
                         </tr>
                         <tr>
-                            <td class="pl-05">Expiration date: end MAY22</td>
+                            <td class="pl-05">Expiration date:</td>
                         </tr>
                         <tr>
                             <td class="text-center">Print: <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')"/></td>
@@ -52,33 +52,33 @@
                     <tbody>
                         <tr>
                             <th width="12.5%">Drafter</th>
-                            <td width="12.5%">ATA</td>
+                            <td width="12.5%"></td>
                             <th width="12.5%">Reviewer</th>
-                            <td width="12.5%">ATO</td>
-                            <td width="12.5%">ATA</td>
-                            <td width="12.5%">NA</td>
+                            <td width="12.5%"></td>
+                            <td width="12.5%"></td>
+                            <td width="12.5%"></td>
                             <th width="12.5%">Approver</th>
-                            <td width="12.5%">SVE</td>
+                            <td width="12.5%"></td>
                         </tr>
                         <tr>
                             <th>Training</th>
-                            <td>Y/xN</td>
+                            <td class="pb-05"><input type="checkbox"/> Y / <input type="checkbox"/> N</td>
                             <th>Training</th>
-                            <td>xY/ N</td>
-                            <td>Y/xN</td>
-                            <td>Y/ N</td>
+                            <td class="pb-05"><input type="checkbox"/> Y / <input type="checkbox"/> N</td>
+                            <td class="pb-05"><input type="checkbox"/> Y / <input type="checkbox"/> N</td>
+                            <td class="pb-05"><input type="checkbox"/> Y / <input type="checkbox"/> N</td>
                             <th>Training</th>
-                            <td>Y/xN</td>
+                            <td class="pb-05"><input type="checkbox"/> Y / <input type="checkbox"/> N</td>
                         </tr>
                         <tr>
                             <th>Date</th>
-                            <td>12APR19</td>
+                            <td></td>
                             <th>Date</th>
-                            <td>24APR19</td>
-                            <td>12APR19</td>
-                            <td>NA</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <th>Date</th>
-                            <td>24APR19</td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
