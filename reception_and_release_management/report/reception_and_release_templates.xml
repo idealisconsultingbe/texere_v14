@@ -218,10 +218,19 @@
                             </tr>
                             <tr>
                                 <th rowspan="2">Reception done by</th>
+                                <th class="text-center p-0">Date</th>
                                 <th class="text-center p-0">Trigram</th>
-                                <th class="text-center p-0" colspan="2">Date</th>
+                                <th class="text-center p-0">Initials</th>
                             </tr>
                             <tr>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.receipt_signed_on">
+                                        <span t-field="doc.receipt_signed_on"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ / _ _ / _ _ _ _
+                                    </t>
+                                </td>
                                 <td class="h-35 text-center">
                                     <t t-if="doc.receipt_signed_by and doc.receipt_signed_by.employee_id">
                                         <span class="text-uppercase" t-field="doc.receipt_signed_by.employee_id.trigram"/>
@@ -230,13 +239,11 @@
                                         _ _ _
                                     </t>
                                 </td>
-                                <td class="h-35 text-center" colspan="2">
-                                    <t t-if="doc.receipt_signed_on">
-                                        <span t-field="doc.receipt_signed_on"/>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.receipt_signed_by and doc.receipt_signed_by.sign_initials">
+                                        <img style="max-height: 3.5rem;" t-attf-src="data:image/png;base64,#{doc.receipt_signed_by.sign_initials}" alt="Initials"/>
                                     </t>
-                                    <t t-else="">
-                                        _ _ / _ _ / _ _ _ _
-                                    </t>
+                                    <t t-else="">&amp;nbsp;</t>
                                 </td>
                             </tr>
                         </tbody>
@@ -275,16 +282,18 @@
 
                             <tr>
                                 <th width="25%" rowspan="2">Label preparation by</th>
+                                <th width="25%" class="text-center p-0">Date</th>
                                 <th width="25%" class="text-center p-0">Trigram</th>
-                                <th class="text-center p-0" colspan="2">Date</th>
+                                <th width="25%" class="text-center p-0">Initials</th>
                             </tr>
                             <tr>
                                 <td class="h-35 text-center">
-                                        _ _ _
-                                </td>
-                                <td class="h-35 text-center" colspan="2">
                                         _ _ / _ _ / _ _ _ _
                                 </td>
+                                <td class="h-35 text-center">
+                                        _ _ _
+                                </td>
+                                <td class="h-35 text-center">&amp;nbsp;</td>
                             </tr>
                             <tr>
                                 <th class="text-center" style="background-color: DarkGray" colspan="4"><h2 class="m-0 fs-13-rem">QA Approval</h2></th>
@@ -310,10 +319,19 @@
                             </tr>
                             <tr>
                                 <th rowspan="2">Approved by</th>
+                                <th class="text-center p-0">Date</th>
                                 <th class="text-center p-0">Trigram</th>
-                                <th class="text-center p-0" colspan="2">Date</th>
+                                <th class="text-center p-0">Initials</th>
                             </tr>
                             <tr>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.signed_on">
+                                        <span t-field="doc.signed_on"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ / _ _ / _ _ _ _
+                                    </t>
+                                </td>
                                 <td class="h-35 text-center">
                                     <t t-if="doc.signed_by and doc.signed_by.employee_id">
                                         <span class="text-uppercase" t-field="doc.signed_by.employee_id.trigram"/>
@@ -322,13 +340,11 @@
                                         _ _ _
                                     </t>
                                 </td>
-                                <td class="h-35 text-center" colspan="2">
-                                    <t t-if="doc.signed_on">
-                                        <span t-field="doc.signed_on"/>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.signed_by and doc.signed_by.sign_initials">
+                                        <img style="max-height: 3.5rem;" t-attf-src="data:image/png;base64,#{doc.signed_by.sign_initials}" alt="Initials"/>
                                     </t>
-                                    <t t-else="">
-                                        _ _ / _ _ / _ _ _ _
-                                    </t>
+                                    <t t-else="">&amp;nbsp;</t>
                                 </td>
                             </tr>
                         </tbody>
@@ -403,16 +419,20 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th rowspan="2">Identified by</th>
-                                <th class="text-center p-0">Trigram</th>
-                                <th class="text-center p-0" colspan="2">Date</th>
+                                <th width="25%" rowspan="2">Identified by</th>
+                                <th width="25%" class="text-center p-0">Date</th>
+                                <th width="25%" class="text-center p-0">Trigram</th>
+                                <th width="25%" class="text-center p-0">Initials</th>
                             </tr>
                             <tr>
                                 <td class="h-35 text-center">
+                                    _ _ / _ _ / _ _ _ _
+                                </td>
+                                <td class="h-35 text-center">
                                     _ _ _
                                 </td>
-                                <td class="h-35 text-center" colspan="2">
-                                    _ _ / _ _ / _ _ _ _
+                                <td class="h-35 text-center">
+                                    &amp;nbsp;
                                 </td>
                             </tr>
                         </tbody>
@@ -442,7 +462,14 @@
                             </tr>
                             <tr>
                                 <td><strong>Total (B)</strong></td>
-                                <td class="text-right">&amp;nbsp;</td>
+                                <td class="text-right">
+                                    <t t-if="doc.total_qty_tested &gt; 0">
+                                        <span t-field="doc.total_qty_tested"/>
+                                    </t>
+                                    <t t-else="">
+                                        &amp;nbsp;
+                                    </t>
+                                </td>
                                 <td colspan="3" style="background-color: LightGray;"/>
                             </tr>
                         </tbody>
@@ -460,39 +487,68 @@
                                 <th width="25%">Reconciliation</th>
                                 <td width="25%">Verify that: A = B</td>
                                 <td colspan="2">
-                                    <ul class="no-marker-style">
-                                        <li><input type="checkbox"/>&amp;nbsp;Consistent</li>
-                                        <li><input type="checkbox"/>&amp;nbsp;Not consistent (details in 'Comments')</li>
-                                    </ul>
+                                    <t t-if="doc.reconciliation_consistency">
+                                        <input type="checkbox" checked="checked"/>&amp;nbsp;
+                                        <span t-field="doc.reconciliation_consistency"/>
+                                    </t>
+                                    <t t-else="">
+                                        <ul class="no-marker-style">
+                                            <li><input type="checkbox"/>&amp;nbsp;Consistent</li>
+                                            <li><input type="checkbox"/>&amp;nbsp;Not consistent (details in 'Comments')</li>
+                                        </ul>
+                                    </t>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Comments</th>
-                                <td colspan="3" style="height: 8rem; vertical-align: top !important;">
-                                    <input type="checkbox"/>&amp;nbsp;N/A
+                                <td colspan="3" style="height: 8rem; vertical-align: top;">
+                                    <t t-if="not doc.reconciliation_comment and not reconciliation_consistency">
+                                        <input type="checkbox"/>&amp;nbsp;N/A
+                                    </t>
+                                    <span t-field="doc.reconciliation_comment"/>
                                 </td>
                             </tr>
                             <tr>
-                                <th style="border-bottom: none;"/>
-                                <th class="text-center p-0">Trigram</th>
-                                <th class="text-center p-0" colspan="2">Date</th>
+                                <th width="25%" style="border-bottom: none;"/>
+                                <th width="25%" class="text-center p-0">Date</th>
+                                <th width="25%" class="text-center p-0">Trigram</th>
+                                <th width="25%" class="text-center p-0">Initials</th>
                             </tr>
                             <tr>
                                 <th>Final check by Operator</th>
                                 <td class="h-35 text-center">
+                                    _ _ / _ _ / _ _ _ _
+                                </td>
+                                <td class="h-35 text-center">
                                     _ _ _
                                 </td>
-                                <td class="h-35 text-center" colspan="2">
-                                    _ _ / _ _ / _ _ _ _
+                                <td class="h-35 text-center">
+                                    &amp;nbsp;
                                 </td>
                             </tr>
                             <tr>
                                 <th>Final check by QA</th>
                                 <td class="h-35 text-center">
-                                    _ _ _
+                                    <t t-if="doc.closed_on">
+                                        <span t-field="doc.closed_on"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ / _ _ / _ _ _ _
+                                    </t>
                                 </td>
-                                <td class="h-35 text-center" colspan="2">
-                                    _ _ / _ _ / _ _ _ _
+                                <td class="h-35 text-center">
+                                     <t t-if="doc.closed_by and doc.closed_by.employee_id">
+                                        <span class="text-uppercase" t-field="doc.closed_by.employee_id.trigram"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ _
+                                    </t>
+                                </td>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.closed_by and doc.closed_by.sign_initials">
+                                        <img style="max-height: 3.5rem;" t-attf-src="data:image/png;base64,#{doc.closed_by.sign_initials}" alt="Initials"/>
+                                    </t>
+                                    <t t-else="">&amp;nbsp;</t>
                                 </td>
                             </tr>
                         </tbody>

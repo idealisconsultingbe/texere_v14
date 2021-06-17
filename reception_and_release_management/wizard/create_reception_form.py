@@ -87,6 +87,7 @@ class CreateReceptionForm(models.TransientModel):
                 'ordered_consistency': self.ordered_consistency,
                 'received_consistency': self.received_consistency,
                 'reception_comment': self.reception_comment,
+                # Information comes from lot but can be changed on RR form
                 'expiration_date': lot.expiration_date or False,
                 'product_qty': lot.product_qty,
                 'company_id': lot.company_id.id

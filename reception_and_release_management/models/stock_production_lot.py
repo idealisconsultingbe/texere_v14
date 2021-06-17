@@ -26,7 +26,7 @@ class ProductionLot(models.Model):
         form_data = self.env['stock.production.lot.reception.form'].read_group([('lot_id', 'in', self.ids), ('state', '=', 'sent')], ['lot_id'], ['lot_id'])
         forms_to_validate = dict((data['lot_id'][0], data['lot_id_count']) for data in form_data)
 
-        form_data = self.env['stock.production.lot.reception.form'].read_group([('lot_id', 'in', self.ids), ('state', '!=', 'draft')], ['lot_id'], ['lot_id'])
+        form_data = self.env['stock.production.lot.reception.form'].read_group([('lot_id', 'in', self.ids)], ['lot_id'], ['lot_id'])
         forms = dict((data['lot_id'][0], data['lot_id_count']) for data in form_data)
 
         form_data = self.env['stock.production.lot.reception.form'].read_group([('lot_id', 'in', self.ids), ('state', '=', 'confirmed')], ['lot_id'], ['lot_id'])
