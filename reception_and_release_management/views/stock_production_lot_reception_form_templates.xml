@@ -5,10 +5,10 @@
         <div style="margin: 0px; padding: 0px; font-size: 13px;">
             <p>
                 <t t-if="new_record">
-                    A new Release and Reception Form has been created in <t t-esc="state"/> state.<br />
+                    A new Release and Reception Form has been created in <t t-esc="'to close' if state == 'to_close' else state"/> state.<br />
                 </t>
                 <t t-else="">
-                    Release and Reception Form <t t-esc="res_name"/> is now <t t-esc="state"/>.<br />
+                    Release and Reception Form <t t-esc="res_name"/> is now <t t-esc="'to close' if state == 'to_close' else state"/>.<br />
                 </t>
             </p>
             <p style="margin: 16px 0px 16px 0px;">

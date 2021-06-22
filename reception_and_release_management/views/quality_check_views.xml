@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="quality_check_view_form_small" model="ir.ui.view">
+        <field name="name">quality.check.view.form.small.inherited.child.form</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="quality_control.quality_check_view_form_small"/>
+        <field name="arch" type="xml">
+            <xpath expr="//h2" position="before">
+                <div class="alert alert-warning" role="alert" style="margin-bottom:0px;"
+                     attrs="{'invisible': [('show_warning_message', '=', False)]}">
+                    There are no operations set on picking related to this quality check.
+                    <field name="show_warning_message" invisible="1"/>
+                </div>
+            </xpath>
+            <xpath expr="//footer" position="before">
+                <notebook>
+                    <page string="QC results" attrs="{'invisible': [('parent_form_id', '=', False)]}">
+                        <group>
+                            <group string="General Information">
+                                <field name="parent_form_id" invisible="1"/>
+                                <field name="final_packaging_size" attrs="{'required': [('parent_form_id', '!=', False)]}"/>
+                            </group>
+                            <group string="Testing Information">
+                                <label for="qty_tested"/>
+                                <div class="o_row">
+                                    <field name="qty_tested"/>
+                                    <field name="product_uom_id"/>
+                                </div>
+                                <label for="qty_conform"/>
+                                <div class="o_row">
+                                    <field name="qty_conform" attrs="{'required': [('parent_form_id', '!=', False)]}"/>
+                                    <field name="product_uom_id"/>
+                                </div>
+                                <label for="qty_not_conform"/>
+                                <div class="o_row">
+                                    <field name="qty_not_conform" attrs="{'required': [('parent_form_id', '!=', False)]}"/>
+                                    <field name="product_uom_id"/>
+                                </div>
+                                <label for="not_conform_fate"/>
+                                <div class="o_row">
+                                    <field name="not_conform_fate" attrs="{'required': [('parent_form_id', '!=', False)]}"/>
+                                    <field name="not_conform_custom_fate"
+                                           attrs="{'invisible': [('not_conform_fate', '!=', 'other')], 'required': [('not_conform_fate', '=', 'other')]}"/>
+                                </div>
+                            </group>
+                            <group string="Reconciliation">
+                                <field name="qc_reconciliation_consistency"
+                                       attrs="{'required': [('parent_form_id', '!=', False)]}"/>
+                                <field name="qc_reconciliation_comment" colspan="4"
+                                       attrs="{'invisible': [('qc_reconciliation_consistency', '!=', 'not_consistent')], 'required': [('qc_reconciliation_consistency', '=', 'not_consistent')]}"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="quality_check_view_form" model="ir.ui.view">
+        <field name="name">quality.check.view.form.inherited.child.form</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="quality_control.quality_check_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="after">
+                <div class="alert alert-warning" role="alert" style="margin-bottom:0px;"
+                     attrs="{'invisible': [('show_warning_message', '=', False)]}">
+                    There are no operations set on picking related to this quality check.
+                    <field name="show_warning_message" invisible="1"/>
+                </div>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="QC results" attrs="{'invisible': [('parent_form_id', '=', False)]}">
+                    <group>
+                        <group string="General Information">
+                            <field name="parent_form_id" invisible="1"/>
+                            <field name="final_packaging_size" attrs="{'required': [('parent_form_id', '!=', False)]}"/>
+                        </group>
+                        <group string="Testing Information">
+                            <label for="qty_tested"/>
+                            <div class="o_row">
+                                <field name="qty_tested"/>
+                                <field name="product_uom_id"/>
+                            </div>
+                            <label for="qty_conform"/>
+                            <div class="o_row">
+                                <field name="qty_conform" attrs="{'required': [('parent_form_id', '!=', False)]}"/>
+                                <field name="product_uom_id"/>
+                            </div>
+                            <label for="not_conform_fate"/>
+                            <div class="o_row">
+                                <field name="not_conform_fate" attrs="{'required': [('parent_form_id', '!=', False)]}"/>
+                                <field name="not_conform_custom_fate"
+                                       attrs="{'invisible': [('not_conform_fate', '!=', 'other')], 'required': [('not_conform_fate', '=', 'other')]}"/>
+                            </div>
+                        </group>
+                        <group string="Reconciliation">
+                            <field name="qc_reconciliation_consistency"
+                                   attrs="{'required': [('parent_form_id', '!=', False)]}"/>
+                            <field name="qc_reconciliation_comment" colspan="4"
+                                   attrs="{'invisible': [('qc_reconciliation_consistency', '!=', 'not_consistent')], 'required': [('qc_reconciliation_consistency', '=', 'not_consistent')]}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+

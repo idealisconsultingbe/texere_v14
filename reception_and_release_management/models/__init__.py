@@ -10,3 +10,4 @@ from . import quality_check
 from . import product_category
 from . import reception_form_action
 from . import hr_employee
+from . import stock_location

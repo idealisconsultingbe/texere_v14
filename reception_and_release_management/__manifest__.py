@@ -28,7 +28,9 @@
         'report/reception_and_release_report.xml',
         'wizard/create_reception_form_views.xml',
         'wizard/reception_form_custom_warning_views.xml',
-        'views/product_category_views.xml'
+        'views/product_category_views.xml',
+        'views/stock_location_views.xml',
+        'views/quality_check_views.xml'
     ],
     'auto_install': False,
     'installable': True,

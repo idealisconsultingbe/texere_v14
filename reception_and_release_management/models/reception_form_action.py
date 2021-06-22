@@ -13,8 +13,8 @@ class ReceptionFormAction(models.Model):
     sequence = fields.Integer('Sequence')
     form_type = fields.Selection(selection=[('rc_without_qc', 'RC Without QC'), ('rc_with_qc', 'RC With QC'), ('qc_result', 'QC Results')], string='Type', required=True, copy=True)
     action = fields.Selection(selection=[('lock', 'Lock'), ('notify', 'Notify')], string='Action', required=True, copy=True)
-    form_state = fields.Selection(selection=[('confirmed', 'Confirmed'), ('sent', 'Sent'), ('approved', 'Approved'), ('closed', 'Closed')], string='Status', required=True, copy=True)
-    picking_type_id = fields.Many2one('stock.picking.type', string='Operation Type', domain="[('company_id', '=', company_id)]", check_compant=True, copy=True)
+    form_state = fields.Selection(selection=[('confirmed', 'Confirmed'), ('sent', 'Sent'), ('approved', 'Approved'), ('to_close', 'To Close'), ('closed', 'Closed')], string='Status', required=True, copy=True)
+    picking_type_id = fields.Many2one('stock.picking.type', string='Operation Type', domain="[('code', '!=', 'incoming'), ('company_id', '=', company_id)]", check_compant=True, copy=True)
     group_id = fields.Many2one('res.groups', string='Access Group', copy=True)
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, default=lambda self: self.env.company, copy=True)
 

@@ -7,9 +7,9 @@ from odoo.exceptions import UserError
 class Picking(models.Model):
     _inherit = 'stock.picking'
 
-    count_lots_to_send = fields.Integer(string='Lots to Send', compute='_compute_count_lots_to_send', store=True, tracking=True)
-    count_lots_to_process = fields.Integer(string='Lots to Process', compute='_compute_count_lots_to_process', store=True, tracking=True)
-    count_lots_to_validate = fields.Integer(string='Lots to Validate', compute='_compute_count_lots_to_validate', store=True, tracking=True)
+    count_lots_to_send = fields.Integer(string='Lots to Send', compute='_compute_count_lots_to_send', store=True)
+    count_lots_to_process = fields.Integer(string='Lots to Process', compute='_compute_count_lots_to_process', store=True)
+    count_lots_to_validate = fields.Integer(string='Lots to Validate', compute='_compute_count_lots_to_validate', store=True)
     count_lots_message = fields.Char(string='Warning Lots Message', compute='_compute_count_lots_to_process', store=True)
 
     @api.depends('move_line_ids.lot_id.form_to_validate_count', 'check_ids')
@@ -29,6 +29,15 @@ class Picking(models.Model):
             count_lots_to_process = len(done_move_lines.mapped('lot_id').filtered(lambda lot: lot.is_form_mandatory and lot.reception_form_count == 0))
             pick.count_lots_message = _('Do not forget to create the Release and Reception Forms.') if count_lots_to_process else False
             pick.count_lots_to_process = count_lots_to_process
+
+    @api.constrains('move_line_ids')
+    def _check_picking_lines(self):
+        for pick in self:
+            if pick.move_line_ids:
+                lines = pick.move_line_ids.filtered(lambda line: line.product_id.categ_id.critical_level == 'critical' and line.lot_id)
+                lot_count_by_product = {product.id:len(lines.filtered(lambda line: line.product_id == product).mapped('lot_id')) for product in lines.mapped('product_id')}
+                if any([count > 1 for count in lot_count_by_product.values()]):
+                    raise UserError(_('It is not possible to have multiple lines with the same critical product but different lots (see operations on picking: {}).').format(pick.name))
 
     def open_create_reception_form(self):
         self.ensure_one()

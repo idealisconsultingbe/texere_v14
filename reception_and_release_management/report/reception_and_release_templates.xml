@@ -32,9 +32,11 @@
             <div class="page">
 
                 <div class="col-12">
-
                     <table class="coa-table p-05 bbr-gray th-whitesmoke">
                         <tbody>
+                            <tr t-if="doc.type == 'qc_result'">
+                                <td colspan="4">Annex #<span t-field="doc.name"/> to OP.1.2_FOR_010</td>
+                            </tr>
                             <tr>
                                 <th class="text-center" style="background-color: DarkGray;" colspan="4"><h2 class="m-0 fs-13-rem">RC Information</h2></th>
                             </tr>
@@ -42,7 +44,10 @@
                                 <th width="25%">Product name</th>
                                 <td width="25%"><span t-field="doc.product_id.name"/></td>
                                 <th width="25%">Order form#</th>
-                                <td width="25%"><span t-field="doc.purchase_id.name"/></td>
+                                <td width="25%">
+                                    <span t-if="doc.purchase_id" t-field="doc.purchase_id.name"/>
+                                    <span t-elif="doc.parent_id and doc.parent_id.purchase_id" t-field="doc.parent_id.purchase_id.name"/>
+                                </td>
                             </tr>
                             <tr>
                                 <th>TEXERE's ID</th>
@@ -60,7 +65,98 @@
                         </tbody>
                     </table>
 
-                    <table class="coa-table p-05 bbr-gray th-whitesmoke">
+                    <table t-if="doc.type == 'qc_result'" class="coa-table p-05 bbr-gray th-whitesmoke">
+                        <tbody>
+                            <tr>
+                                <th class="text-center" style="background-color: DarkGray;" colspan="4"><h2 class="m-0 fs-13-rem">QC Testing</h2></th>
+                            </tr>
+                            <tr>
+                                <th width="25%">Test date</th>
+                                <td width="75%" colspan="3">
+                                    <t t-if="doc.tested_on">
+                                        <span t-field="doc.tested_on"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ / _ _ / _ _ _ _
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Test performed</th>
+                                <td colspan="3">
+                                    To define
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Quantity tested (1)</th>
+                                <td colspan="3"><t t-if="doc.qty_tested"><span t-field="doc.qty_tested"/> <span t-field="doc.product_uom_id"/></t></td>
+                            </tr>
+                            <tr>
+                                <th width="25%" rowspan="2">Results</th>
+                                <td width="25%">Quantity conform (n)</td>
+                                <td colspan="2" width="50%"><t t-if="doc.qty_conform"><span t-field="doc.qty_conform"/> <span t-field="doc.product_uom_id"/></t></td>
+                            </tr>
+                            <tr>
+                                <td>Quantity not conform (2)</td>
+                                <td colspan="2"><t t-if="doc.qty_not_conform"><span t-field="doc.qty_not_conform"/> <span t-field="doc.product_uom_id"/></t></td>
+                            </tr>
+                            <tr>
+                                <th rowspan="2">Reconciliation</th>
+                                <td colspan="3" width="75%">Verify that: n + 2 = 1</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <t t-if="doc.qc_reconciliation_consistency">
+                                        <input type="checkbox" checked="checked"/>&amp;nbsp;<span t-field="doc.qc_reconciliation_consistency"/>
+                                        <span t-if="doc.qc_reconciliation_consistency == 'not_consistent'"> (details in 'Comments')</span>
+                                    </t>
+                                    <t t-else="">
+                                        <ul class="no-marker-style inline-style">
+                                            <li><input type="checkbox"/> Consistent</li>
+                                            <li> / </li>
+                                            <li><input type="checkbox"/> Not consistent (details in 'Comments')</li>
+                                        </ul>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Fate of NC RC</th>
+                                <td colspan="3">
+                                    <t t-if="doc.not_conform_fate">
+                                        <ul class="no-marker-style">
+                                            <li>The not conform RC are:</li>
+                                            <li><input type="checkbox" checked="checked"/> <span t-field="doc.not_conform_fate"/><t t-if="doc.not_conform_fate == 'other' and donc.not_conform_custom_fate">: <span t-field="doc.not_conform_custom_fate"/></t></li>
+                                        </ul>
+                                    </t>
+                                    <t t-else="">
+                                        <ul class="no-marker-style">
+                                            <li>The not conform RC are:</li>
+                                            <li><input type="checkbox"/> Eliminated/Destroyed</li>
+                                            <li><input type="checkbox"/> Other (specify): </li>
+                                        </ul>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Final packaging size</th>
+                                <td colspan="3">
+                                    <span t-field="doc.final_packaging_size"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Comments</th>
+                                <td colspan="3" style="height: 8rem; vertical-align: top;">
+                                    <t t-if="not doc.qc_reconciliation_comment and
+                                                not qc_reconciliation_consistency">
+                                        <input type="checkbox"/>&amp;nbsp;N/A
+                                    </t>
+                                    <span t-field="doc.qc_reconciliation_comment"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table t-if="doc.type != 'qc_result'" class="coa-table p-05 bbr-gray th-whitesmoke">
                         <tbody>
                             <tr>
                                 <th class="text-center" style="background-color: DarkGray;" colspan="4"><h2 class="m-0 fs-13-rem">Reception</h2></th>
@@ -251,6 +347,119 @@
 
                     <p style="page-break-after:always;"/>
 
+                    <table t-if="doc.type == 'qc_result'" class="coa-table p-05 bbr-gray th-whitesmoke">
+                        <tbody>
+                            <tr>
+                                <th class="text-center" style="background-color: DarkGray" colspan="4"><h2 class="m-0 fs-13-rem">Label preparation</h2></th>
+                            </tr>
+                            <tr>
+                                <td colspan="2" width="50%" style="border-bottom: none;">
+                                    Calculate the number of labels needed:
+                                </td>
+                                <td class="text-center text-muted" width="50%" rowspan="4" colspan="2">
+                                    Stick the label specimen here
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="pl-5" style="border-bottom: none;">
+                                    n/3 = _____ + 1 = _____ labels to print
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border-bottom: none;">
+                                    Prepare the labels following the RC label template.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Print the labels and stick on specimen on this form.
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="25%" rowspan="2">QC test by</th>
+                                <th width="25%" class="text-center p-0">Date</th>
+                                <th width="25%" class="text-center p-0">Trigram</th>
+                                <th width="25%" class="text-center p-0">Initials</th>
+                            </tr>
+                            <tr>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.tested_on">
+                                        <span t-field="doc.tested_on"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ / _ _ / _ _ _ _
+                                    </t>
+                                </td>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.tested_by and doc.tested_by.employee_id">
+                                        <span class="text-uppercase" t-field="doc.tested_by.employee_id.trigram"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ _
+                                    </t>
+                                </td>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.tested_by and doc.tested_by.sign_initials">
+                                        <img style="max-height: 3.5rem;" t-attf-src="data:image/png;base64,#{doc.tested_by.sign_initials}" alt="Initials"/>
+                                    </t>
+                                    <t t-else="">&amp;nbsp;</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center" style="background-color: DarkGray" colspan="4"><h2 class="m-0 fs-13-rem">QA Approval</h2></th>
+                            </tr>
+                            <tr>
+                                <th>Label check</th>
+                                <td>
+                                    <input type="checkbox"/>&amp;nbsp;Done
+                                </td>
+                                <th>RC Status</th>
+                                <td>
+                                    <t t-if="doc.lot_status">
+                                        <input type="checkbox" checked="checked"/>&amp;nbsp;
+                                        <span t-field="doc.lot_status"/>
+                                    </t>
+                                    <t t-else="">
+                                        <ul class="no-marker-style">
+                                            <li><input type="checkbox"/> Released for use</li>
+                                            <li><input type="checkbox"/> Rejected</li>
+                                        </ul>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th rowspan="2">Approved by</th>
+                                <th class="text-center p-0">Date</th>
+                                <th class="text-center p-0">Trigram</th>
+                                <th class="text-center p-0">Initials</th>
+                            </tr>
+                            <tr>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.signed_on">
+                                        <span t-field="doc.signed_on"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ / _ _ / _ _ _ _
+                                    </t>
+                                </td>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.signed_by and doc.signed_by.employee_id">
+                                        <span class="text-uppercase" t-field="doc.signed_by.employee_id.trigram"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ _
+                                    </t>
+                                </td>
+                                <td class="h-35 text-center">
+                                    <t t-if="doc.signed_by and doc.signed_by.sign_initials">
+                                        <img style="max-height: 3.5rem;" t-attf-src="data:image/png;base64,#{doc.signed_by.sign_initials}" alt="Initials"/>
+                                    </t>
+                                    <t t-else="">&amp;nbsp;</t>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                     <table t-if="doc.type == 'rc_without_qc'" class="coa-table p-05 bbr-gray th-whitesmoke">
                         <tbody>
                             <tr>
@@ -350,19 +559,20 @@
                         </tbody>
                     </table>
 
-                    <table t-if="doc.type == 'rc_without_qc'" class="coa-table p-05 bbr-gray no-break-inside th-whitesmoke">
+                    <table t-if="doc.type != 'rc_with_qc'" class="coa-table p-05 bbr-gray no-break-inside th-whitesmoke">
                         <tbody>
                             <tr>
                                 <th class="text-center" style="background-color: DarkGray" colspan="4"><h2 class="m-0 fs-13-rem">Identification, Storage and Doc Update</h2></th>
                             </tr>
                             <tr>
-                                <th width="25%" rowspan="3">Identification</th>
+                                <t t-if="doc.type == 'rc_without_qc'"><th width="25%" rowspan="3">Identification</th></t>
+                                <t t-else=""><th width="25%" rowspan="2">Identification</th></t>
                                 <td colspan="3" style="border-bottom: none;">
-                                    Stick the green labels on the final packaging of conform RC and perform the label reconciliation:
+                                    Stick the <t t-if="doc.type == 'rc_without_qc'">green</t> labels on the final packaging of conform RC and perform the label reconciliation:
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-center" colspan="3" style="border-bottom: none;">
+                                <td class="text-center" colspan="3" t-attf-style="#{'border-bottom: none;' if doc.type == 'rc_without_qc' else ''}">
                                     <ul class="no-marker-style inline-style">
                                         <li><input type="checkbox"/>&amp;nbsp;Consistent</li>
                                         <li> / </li>
@@ -370,7 +580,7 @@
                                     </ul>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr t-if="doc.type == 'rc_without_qc'">
                                 <td colspan="3">
                                     If applicable, red labels are stuck on not conform RC.
                                 </td>
@@ -406,10 +616,36 @@
                                     <t t-else=""> _______________________________</t>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr t-if="doc.type == 'rc_without_qc'">
                                 <th>Doc update</th>
                                 <td colspan="3">
                                     Complete the OP.1.2_TAB_002 Table for stock management for reagents and consumables.
+                                </td>
+                            </tr>
+                            <tr t-if="doc.type == 'qc_result'">
+                                <th rowspan="4">Doc update</th>
+                                <td colspan="3">
+                                    Complete the OP.1.2_TAB_002 Table for stock management for reagents and consumables.
+                                </td>
+                            </tr>
+                            <tr t-if="doc.type == 'qc_result'">
+                                <td colspan="3" style="border-bottom: none;">
+                                    Fill in the OP.1.2_FOR_010 Reagents and Consumables with QC testing: reception and release form.
+                                </td>
+                            </tr>
+                            <tr t-if="doc.type == 'qc_result'">
+                                <td colspan="3" style="border-bottom: none;">
+                                    Last set of items checked:
+                                </td>
+                            </tr>
+                            <tr t-if="doc.type == 'qc_result'">
+                                <td class="text-center" colspan="3">
+                                    <ul class="no-marker-style inline-style">
+                                        <li><input type="checkbox"/> No</li>
+                                        <li> / </li>
+                                        <li><input type="checkbox"/> Yes</li>
+                                        <li>: fill in the R&amp;R closure part of OP.1.2_FOR_010.</li>
+                                    </ul>
                                 </td>
                             </tr>
                             <tr>
@@ -453,7 +689,18 @@
                                 <th class="text-center" width="20%">Date</th>
                                 <th class="text-center" width="20%">Trigram</th>
                             </tr>
-                            <tr t-if="not doc.child_ids" t-foreach="range(15)" t-as="row">
+                            <tr t-if="doc.child_ids" t-foreach="doc.child_ids" t-as="child">
+                                <td class="text-center"><span t-field="child.name"/></td>
+                                <td class="text-right"><span t-field="child.qty_tested"/></td>
+                                <td class="text-right"><span t-field="child.qty_conform"/></td>
+                                <td class="text-center"><span t-field="child.tested_on"/></td>
+                                <td class="text-center">
+                                    <t t-if="child.tested_by and child.tested_by.employee_id">
+                                        <span class="text-uppercase" t-field="child.tested_by.employee_id.trigram"/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr t-else="" t-foreach="range(15)" t-as="row">
                                 <td>&amp;nbsp;</td>
                                 <td>&amp;nbsp;</td>
                                 <td>&amp;nbsp;</td>
@@ -516,14 +763,28 @@
                             </tr>
                             <tr>
                                 <th>Final check by Operator</th>
+                                <t t-set="final_check" t-value="doc.child_ids.filtered(lambda child: child.last_child)"/>
                                 <td class="h-35 text-center">
-                                    _ _ / _ _ / _ _ _ _
+                                    <t t-if="final_check and final_check[0].tested_on">
+                                        <span t-field="final_check[0].tested_on"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ / _ _ / _ _ _ _
+                                    </t>
                                 </td>
                                 <td class="h-35 text-center">
-                                    _ _ _
+                                    <t t-if="final_check and final_check[0].tested_by and final_check[0].tested_by.employee_id">
+                                        <span class="text-uppercase" t-field="final_check[0].tested_by.employee_id.trigram"/>
+                                    </t>
+                                    <t t-else="">
+                                        _ _ _
+                                    </t>
                                 </td>
                                 <td class="h-35 text-center">
-                                    &amp;nbsp;
+                                    <t t-if="final_check and final_check[0].tested_by and final_check[0].tested_by.sign_initials">
+                                        <img style="max-height: 3.5rem;" t-attf-src="data:image/png;base64,#{final_check[0].tested_by.sign_initials}" alt="Initials"/>
+                                    </t>
+                                    <t t-else="">&amp;nbsp;</t>
                                 </td>
                             </tr>
                             <tr>

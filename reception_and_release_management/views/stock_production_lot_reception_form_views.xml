@@ -10,9 +10,8 @@
                     <button name="send_form" string="Send Form" context="{'send_form': True}" states="confirmed" type="object" class="oe_highlight" groups="base.group_user"/>
                     <button name="sign_form" string="Release and Sign" states="sent" context="{'form_lot_status': 'released'}" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
                     <button name="sign_form" string="Reject and Sign" states="sent" context="{'form_lot_status': 'rejected'}" type="object" class="oe_highlight" groups="quality.group_quality_user"/>
-                    <button name="%(action_close_reception_form)d" string="Close Form" attrs="{'invisible': ['|', ('state', '!=', 'approved'), ('type', '!=', 'rc_with_qc')]}" type="action" class="oe_highlight" groups="quality.group_quality_user"/>
-<!--                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" groups="base.group_user"/>-->
-                    <field name="state" widget="statusbar" statusbar_visible="confirmed,sent,approved,closed"/>
+                    <button name="%(action_close_reception_form)d" string="Close Form" attrs="{'invisible': ['|', ('state', '!=', 'to_close'), ('type', '!=', 'rc_with_qc')]}" type="action" class="oe_highlight" groups="quality.group_quality_user"/>
+                    <field name="state" widget="statusbar" statusbar_visible="confirmed,sent,approved,to_close,closed"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -74,12 +73,58 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="QC results" attrs="{'invisible': [('type', '!=', 'qc_result')]}">
+                            <group>
+                                <group string="General Information">
+                                    <field name="last_child"/>
+                                    <field name="final_packaging_size" attrs="{'required': [('type', '=', 'qc_result')]}"/>
+                                </group>
+                                <group string="Testing Information">
+                                    <field name="check_id"/>
+                                    <label for="qty_tested"/>
+                                    <div class="o_row">
+                                        <field name="qty_tested" attrs="{'required': [('type', '=', 'qc_result')]}"/>
+                                        <field name="product_uom_id"/>
+                                    </div>
+                                    <label for="qty_conform"/>
+                                    <div class="o_row">
+                                        <field name="qty_conform" attrs="{'required': [('type', '=', 'qc_result')]}"/>
+                                        <field name="product_uom_id"/>
+                                    </div>
+                                    <label for="qty_not_conform"/>
+                                    <div class="o_row">
+                                        <field name="qty_not_conform" attrs="{'required': [('type', '=', 'qc_result')]}"/>
+                                        <field name="product_uom_id"/>
+                                    </div>
+                                    <label for="not_conform_fate"/>
+                                    <div class="o_row">
+                                        <field name="not_conform_fate" attrs="{'required': [('type', '=', 'qc_result')]}"/>
+                                        <field name="not_conform_custom_fate" attrs="{'invisible': [('not_conform_fate', '!=', 'other')], 'required': [('not_conform_fate', '=', 'other')]}"/>
+                                    </div>
+                                </group>
+                                <group string="Reconciliation">
+                                    <field name="qc_reconciliation_consistency" attrs="{'required': [('type', '=', 'qc_result')]}"/>
+                                    <field name="qc_reconciliation_comment" attrs="{'invisible': [('qc_reconciliation_consistency', '!=', 'not_consistent')], 'required': [('qc_reconciliation_consistency', '=', 'not_consistent')]}"/>
+                                </group>
+                            </group>
+                        </page>
                         <page string="QC Results" attrs="{'invisible': [('type', '!=', 'rc_with_qc')]}">
                             <group>
                                 <field name="child_ids" nolabel="1">
                                     <tree>
-                                        <!-- TODO: add text decoration ? -->
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="lot_id" invisible="1"/>
+                                        <field name="product_id" invisible="1"/>
+                                        <field name="type" invisible="1"/>
+                                        <field name="parent_id" invisible="1"/>
+                                        <field name="check_id" invisible="1"/>
                                         <field name="name"/>
+                                        <field name="qty_tested"/>
+                                        <field name="qty_conform"/>
+                                        <field name="product_uom_id"/>
+                                        <field name="qc_reconciliation_consistency"/>
+                                        <field name="last_child"/>
+                                        <field name="state"/>
                                     </tree>
                                 </field>
                             </group>
@@ -121,8 +166,9 @@
                 <separator />
                 <filter string="Confirmed" name="filter_rr_confirmed" domain="[('state', '=', 'confirmed')]"/>
                 <filter string="Sent" name="filter_rr_sent" domain="[('state', '=', 'sent')]"/>
-                <filter string="approved" name="filter_rr_approved" domain="[('state', '=', 'approved')]"/>
-                <filter string="closed" name="filter_rr_closed" domain="[('state', '=', 'closed')]"/>
+                <filter string="Approved" name="filter_rr_approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="To Close" name="filter_rr_to_close" domain="[('state', '=', 'to_close')]"/>
+                <filter string="Closed" name="filter_rr_closed" domain="[('state', '=', 'closed')]"/>
                 <separator />
                 <filter string="Released" name="filter_rr_lot_released" domain="[('lot_status', '=', 'released')]"/>
                 <filter string="Rejected" name="filter_rr_lot_rejected" domain="[('lot_status', '=', 'rejected')]"/>

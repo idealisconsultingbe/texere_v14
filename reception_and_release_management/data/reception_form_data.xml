@@ -3,9 +3,29 @@
     <data noupdate="1">
 
         <record id="stock_production_lot_reception_form_sequence" model="ir.sequence">
-            <field name="name">Reception Form Sequence</field>
-            <field name="code">stock.production.lot.reception.form</field>
+            <field name="name">Reception Form Sequence (RC without QC)</field>
+            <field name="code">stock.production.lot.reception.form.rc_without_qc</field>
             <field name="prefix">RR/</field>
+            <field name="active">True</field>
+            <field name="padding">6</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+        <record id="stock_production_lot_reception_form_sequence" model="ir.sequence">
+            <field name="name">Reception Form Sequence (RC with QC)</field>
+            <field name="code">stock.production.lot.reception.form.rc_with_qc</field>
+            <field name="prefix">RR-QC/</field>
+            <field name="active">True</field>
+            <field name="padding">6</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+        <record id="stock_production_lot_reception_form_sequence" model="ir.sequence">
+            <field name="name">Reception Form Sequence (QC Results)</field>
+            <field name="code">stock.production.lot.reception.form.qc_result</field>
+            <field name="prefix">QC-Res/</field>
             <field name="active">True</field>
             <field name="padding">6</field>
             <field name="number_increment">1</field>
