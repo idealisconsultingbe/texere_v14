@@ -157,12 +157,13 @@ class LotReceptionForm(models.Model):
 
     def write(self, values):
         res = super().write(values)
-        reception_form_actions = self.env['reception.form.action'].search([('action', '=', 'notify'),
-                                                                           ('form_type', '=', self.type),
-                                                                           ('form_state', '=', self.state),
-                                                                           ('company_id', '=', self.company_id.id)])
-        if reception_form_actions:
-            self._notify(reception_form_actions.mapped('group_id.users.partner_id'))
+        for record in self:
+            reception_form_actions = self.env['reception.form.action'].search([('action', '=', 'notify'),
+                                                                               ('form_type', '=', record.type),
+                                                                               ('form_state', '=', record.state),
+                                                                               ('company_id', '=', record.company_id.id)])
+            if reception_form_actions:
+                record._notify(reception_form_actions.mapped('group_id.users.partner_id'))
         return res
 
     def sign_form(self):
